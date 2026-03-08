@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { USER } = require('../constants');
 
-module.export = (sequelize) => {
+module.exports = (sequelize) => {
     const User = sequelize.define(
     'User', {
         id: {
@@ -52,8 +52,8 @@ module.export = (sequelize) => {
     }, {
         tableName: 'users',
         timestamps: true,
-        createdAt: created_at,
-        updatedAt: updated_at
+        createdAt: 'created_at',
+        updatedAt: 'updated_at'
     });
 
     return User;
