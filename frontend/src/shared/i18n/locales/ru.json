@@ -1,0 +1,65 @@
+{
+  "language": {
+    "ru": "Русский",
+    "en": "Английский"
+  },
+  "auth": {
+    "register": {
+      "title": "Регистрация",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "email": "Email",
+      "password": "Пароль",
+      "confirmPassword": "Подтвердите пароль",
+      "role": "Роль",
+      "submit": "Зарегистрироваться",
+      "submitting": "Регистрация...",
+      "loginLink": "Уже есть аккаунт? Войти"
+    },
+    "login": {
+      "title": "Вход",
+      "email": "Email",
+      "password": "Пароль",
+      "submit": "Войти",
+      "submitting": "Вход...",
+      "registerLink": "Нет аккаунта? Зарегистрироваться"
+    },
+    "errors": {
+      "firstNameRequired": "Имя обязательно",
+      "lastNameRequired": "Фамилия обязательна",
+      "emailRequired": "Email обязателен",
+      "emailInvalid": "Введите корректный email (например, name@example.com)",
+      "passwordRequired": "Пароль обязателен",
+      "passwordMinLength": "Пароль должен содержать минимум 6 символов",
+      "confirmPasswordRequired": "Подтвердите пароль",
+      "passwordsMismatch": "Пароли не совпадают",
+      "registrationFailed": "Ошибка регистрации",
+      "loginFailed": "Ошибка входа"
+    }
+  },
+  "profile": {
+    "title": "Профиль",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "email": "Email",
+    "role": "Роль",
+    "role_player": "Игрок",
+    "role_trainer": "Тренер",
+    "role_admin": "Администратор"
+  },
+  "home": {
+    "title": "Добро пожаловать на платформу обучения шахматам"
+  },
+  "header": {
+    "title": "Шахматное обучение",
+    "profile": "Профиль",
+    "logout": "Выйти",
+    "login": "Войти",
+    "register": "Регистрация"
+  },
+  "common": {
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "logout": "Выйти"
+  }
+}
