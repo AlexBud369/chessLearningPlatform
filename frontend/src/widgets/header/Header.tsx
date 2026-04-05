@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Box, Button, Select, MenuItem, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../shared/lib/hooks';
 import { logout } from '../../entities/user/model/store';
+import { toggleTheme } from '../../entities/theme/model/store';
 import { authApi } from '../../shared/api/authApi';
 import { tokenStorage } from '../../shared/lib/tokenStorage';
 import { ROUTES } from '../../shared/constants/routes';
@@ -15,6 +18,7 @@ export const Header = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { t, i18n } = useTranslation();
   const user = useAppSelector(state => state.user.user);
+  const themeMode = useAppSelector(state => state.theme.mode);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -32,6 +36,10 @@ export const Header = () => {
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
+  };
+
+  const handleToggleTheme = () => {
+    dispatch(toggleTheme());
   };
 
   const menuItems = user
@@ -80,6 +88,10 @@ export const Header = () => {
                 <MenuItem value="en">{t('language.en')}</MenuItem>
               </Select>
 
+              <IconButton onClick={handleToggleTheme} color="inherit">
+                {themeMode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+              </IconButton>
+
               {user ? (
                 <>
                   <Button color="inherit" component={Link} to={ROUTES.PROFILE}>
@@ -111,6 +123,8 @@ export const Header = () => {
                 menuItems={menuItems}
                 language={i18n.language}
                 onLanguageChange={handleLanguageChange}
+                themeMode={themeMode}
+                onToggleTheme={handleToggleTheme}
               />
             </>
           )}

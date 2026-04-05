@@ -1,5 +1,7 @@
 import React from 'react';
-import { Drawer, Box, List, ListItemButton, ListItemText, Divider, Select, MenuItem } from '@mui/material';
+import { Drawer, Box, List, ListItemButton, ListItemText, ListItemIcon, Divider, Select, MenuItem } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +17,8 @@ interface MobileMenuProps {
   menuItems: MenuItemType[];
   language: string;
   onLanguageChange: (lang: string) => void;
+  themeMode: 'light' | 'dark';
+  onToggleTheme: () => void;
 }
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({
@@ -23,6 +27,8 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   menuItems,
   language,
   onLanguageChange,
+  themeMode,
+  onToggleTheme,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -45,6 +51,12 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
               <ListItemText primary={item.text} />
             </ListItemButton>
           ))}
+          <ListItemButton onClick={() => { onToggleTheme(); onClose(); }}>
+            <ListItemIcon>
+              {themeMode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+            </ListItemIcon>
+            <ListItemText primary={t('theme.switch')} />
+          </ListItemButton>
         </List>
         <Divider />
         <List>
