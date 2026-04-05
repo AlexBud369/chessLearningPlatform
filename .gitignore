@@ -87,7 +87,12 @@ dist
 
 # Gatsby files
 .cache/
-public
+favicon.ico
+index.html
+*.png
+manifest.json
+robots.txt
+
 
 # Vuepress build output
 .vuepress/dist
