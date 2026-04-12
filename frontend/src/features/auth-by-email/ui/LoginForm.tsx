@@ -2,8 +2,6 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { TextField, Button, Box, Alert } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch, useAppSelector } from '../../../shared/lib/hooks';
-import { setError } from '../../../entities/user/model/store';
 import { authApi } from '../../../shared/api/authApi';
 import { useAuthSubmit } from '../model/useAuthSubmit';
 
@@ -14,25 +12,30 @@ interface LoginFormData {
 
 export const LoginForm = () => {
   const { t } = useTranslation();
-  const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector(state => state.user);
   const { submit } = useAuthSubmit(authApi.login);
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<LoginFormData>();
+  const { register, handleSubmit, formState: { errors }, setError, setValue } = useForm<LoginFormData>();
 
   const onSubmit = async (data: LoginFormData) => {
-    await submit(data);
+    const result = await submit(data);
+    if (!result.success && result.error) {
+      if (result.errorType === 'root') {
+        setError('root', { message: result.error });
+      } else if (result.errorType === 'field') {
+        setError('email', { message: result.error });
+      }
+    }
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue('email', e.target.value);
-    if (error) {
-      dispatch(setError(null));
+    if (errors.root) {
+      setError('root', { message: undefined });
     }
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ maxWidth: 400, mx: 'auto' }}>
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {errors.root && <Alert severity="error" sx={{ mb: 2 }}>{errors.root.message}</Alert>}
       <TextField
         fullWidth
         label={t('auth.login.email')}
@@ -51,8 +54,8 @@ export const LoginForm = () => {
         error={!!errors.password}
         helperText={errors.password?.message}
       />
-      <Button type="submit" variant="contained" fullWidth disabled={isLoading}>
-        {isLoading ? t('auth.login.submitting') : t('auth.login.submit')}
+      <Button type="submit" variant="contained" fullWidth disabled={false}>
+        {t('auth.login.submit')}
       </Button>
     </Box>
   );
