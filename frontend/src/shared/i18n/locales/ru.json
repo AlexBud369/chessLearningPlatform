@@ -3,6 +3,9 @@
     "ru": "Русский",
     "en": "Английский"
   },
+  "theme": {
+    "switch": "Сменить тему"
+  },
   "auth": {
     "register": {
       "title": "Регистрация",
@@ -34,7 +37,9 @@
       "confirmPasswordRequired": "Подтвердите пароль",
       "passwordsMismatch": "Пароли не совпадают",
       "registrationFailed": "Ошибка регистрации",
-      "loginFailed": "Ошибка входа"
+      "loginFailed": "Ошибка входа",
+      "userAlreadyExists": "Пользователь с таким email уже зарегистрирован",
+      "invalidCredentials": "Неверный email или пароль"
     }
   },
   "profile": {

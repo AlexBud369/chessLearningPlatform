@@ -3,6 +3,9 @@
     "ru": "Russian",
     "en": "English"
   },
+  "theme": {
+    "switch": "Toggle theme"
+  },
   "auth": {
     "register": {
       "title": "Registration",
@@ -34,7 +37,9 @@
       "confirmPasswordRequired": "Please confirm your password",
       "passwordsMismatch": "Passwords do not match",
       "registrationFailed": "Registration failed",
-      "loginFailed": "Login failed"
+      "loginFailed": "Login failed",
+      "userAlreadyExists": "User with this email already exists",
+      "invalidCredentials": "Invalid email or password"
     }
   },
   "profile": {
