@@ -1,0 +1,70 @@
+{
+  "language": {
+    "ru": "Russian",
+    "en": "English"
+  },
+  "theme": {
+    "switch": "Toggle theme"
+  },
+  "auth": {
+    "register": {
+      "title": "Registration",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "role": "Role",
+      "submit": "Register",
+      "submitting": "Registering...",
+      "loginLink": "Already have an account? Login"
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Login",
+      "submitting": "Logging in...",
+      "registerLink": "Don't have an account? Register"
+    },
+    "errors": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address (e.g., name@example.com)",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordsMismatch": "Passwords do not match",
+      "registrationFailed": "Registration failed",
+      "loginFailed": "Login failed",
+      "userAlreadyExists": "User with this email already exists",
+      "invalidCredentials": "Invalid email or password"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "role": "Role",
+    "role_player": "Player",
+    "role_trainer": "Trainer",
+    "role_admin": "Administrator"
+  },
+  "home": {
+    "title": "Welcome to Chess Learning Platform"
+  },
+  "header": {
+    "title": "Chess Learning",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "logout": "Logout"
+  }
+}

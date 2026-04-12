@@ -1,6 +1,6 @@
 const { setRefreshTokenCookie, clearRefreshTokenCookie } = require('../utils/cookie.utils');
 const authService = require('../services/authService');
-const tokenService = require('../services/tokenService');
+const userRepository = require('../repositories/userRepository');
 
 class AuthController {
     async register(req, res, next) {
@@ -43,6 +43,32 @@ class AuthController {
             }
             clearRefreshTokenCookie(res);
             res.json({ message: 'Logged out' });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getProfile(req, res, next) {
+        try {
+            const userId = req.user.id; 
+            const user = await userRepository.findById(userId);
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            const userData = {
+                id: user.id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                role: user.role,
+                avatar: user.avatar,
+                is_blocked: user.is_blocked,
+                created_at: user.created_at,
+                updated_at: user.updated_at
+            };
+
+            res.json({ user: userData });
         } catch (error) {
             next(error);
         }
