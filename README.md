@@ -1,0 +1,1 @@
+**Пояснительная записка:** [google docs document](https://drive.google.com/drive/folders/1-fFnc0JML5FJhJJTT-4xkFlwuX-PB2zM)  
