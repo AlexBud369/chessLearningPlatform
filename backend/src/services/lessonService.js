@@ -3,10 +3,6 @@ const courseRepository = require('../repositories/courseRepository');
 
 class LessonService {
   async createLesson(lessonData, user) {
-    if (!['trainer', 'admin'].includes(user.role)) {
-      throw new Error('Forbidden: only trainers and admins can create lessons');
-    }
-
     const course = await courseRepository.findById(lessonData.course_id);
     if (!course) {
       throw new Error('Course not found');

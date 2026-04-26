@@ -1,10 +1,7 @@
 const themeRepository = require('../repositories/themeRepository');
 
 class ThemeService {
-  async createTheme(themeData, userRole) {
-    if (!['trainer', 'admin'].includes(userRole)) {
-      throw new Error('Forbidden: only trainers and admins can create themes');
-    }
+  async createTheme(themeData) {
     return await themeRepository.create(themeData);
   }
 

@@ -3,9 +3,6 @@ const themeRepository = require('../repositories/themeRepository');
 
 class CourseService {
   async createCourse(courseData, user) {
-    if (!['trainer', 'admin'].includes(user.role)) {
-      throw new Error('Forbidden: only trainers and admins can create courses');
-    }
     const theme = await themeRepository.findById(courseData.theme_id);
     if (!theme) {
       throw new Error('Theme not found');
