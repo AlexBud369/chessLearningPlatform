@@ -18,6 +18,10 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING(COURSE.DESCRIPTION_MAX_LENGTH),
         allowNull: true,
       },
+      cover_image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       theme_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
