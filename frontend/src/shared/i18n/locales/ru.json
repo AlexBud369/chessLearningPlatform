@@ -62,9 +62,57 @@
     "login": "Войти",
     "register": "Регистрация"
   },
+  "footer": {
+    "copyright": "© {{year}} Шахматная платформа. Все права защищены.",
+    "about": "О проекте",
+    "contact": "Контакты"
+  },
   "common": {
     "save": "Сохранить",
     "cancel": "Отмена",
     "logout": "Выйти"
+  },
+  "courseCatalog": {
+    "title": "Каталог курсов",
+    "noCourses": "Курсы не найдены. Попробуйте изменить фильтры."
+  },
+  "course": {
+    "video": "Видео",
+    "text": "Текст",
+    "goToLesson": "Перейти к уроку",
+    "notFound": "Курс не найден",
+    "noDescription": "Нет описания",
+    "author": "Автор",
+    "lessons": "Уроки",
+    "noLessons": "В этом курсе пока нет уроков"
+  },
+  "lesson": {
+    "notFound": "Урок не найден",
+    "previous": "Предыдущий",
+    "next": "Следующий",
+    "completed": "Пройдено",
+    "markCompleted": "Отметить пройденным"
+  },
+  "lessonProgress": {
+    "success": "Урок отмечен пройденным",
+    "error": "Ошибка при отметке урока"
+  },
+  "courseCard": {
+    "noDescription": "Нет описания",
+    "progressPercent": "Прогресс: {{percent}}%",
+    "goToButton": "Перейти"
+  },
+  "filters": {
+    "search": "Поиск",
+    "theme": "Тема",
+    "allThemes": "Все темы",
+    "sortBy": "Сортировать",
+    "noSort": "Без сортировки",
+    "byTitle": "По названию",
+    "byDate": "По дате",
+    "order": "Порядок",
+    "ascending": "Возрастание",
+    "descending": "Убывание",
+    "clearFilters": "Сбросить фильтры"
   }
 }
