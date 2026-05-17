@@ -3,6 +3,9 @@ import { HomePage } from '../../pages/home/HomePage';
 import { LoginPage } from '../../pages/auth/login/LoginPage';
 import { RegisterPage } from '../../pages/auth/register/RegisterPage';
 import { ProfilePage } from '../../pages/profile/ProfilePage';
+import { CourseCatalogPage } from '../../pages/courses/CourseCatalogPage';
+import { CoursePage } from '../../pages/courses/CoursePage';
+import { LessonPage } from '../../pages/lessons/LessonPage';
 
 export const RouterProvider = () => (
   <BrowserRouter>
@@ -11,6 +14,9 @@ export const RouterProvider = () => (
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/courses" element={<CourseCatalogPage />} />
+      <Route path="/courses/:courseId" element={<CoursePage />} />
+      <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage />} />
     </Routes>
   </BrowserRouter>
 );

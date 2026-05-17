@@ -1,7 +1,7 @@
-import React from 'react';
 import { Container, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Header } from '../../widgets/header/Header';
+import { Footer } from '../../widgets/footer/Footer';
 
 export const HomePage = () => {
   const { t } = useTranslation();
@@ -13,6 +13,7 @@ export const HomePage = () => {
           {t('home.title')}
         </Typography>
       </Container>
+      <Footer />
     </>
   );
 };

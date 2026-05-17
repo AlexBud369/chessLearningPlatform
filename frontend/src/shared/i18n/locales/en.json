@@ -62,9 +62,57 @@
     "login": "Login",
     "register": "Register"
   },
+  "footer": {
+    "copyright": "© {{year}} Chess Learning Platform. All rights reserved.",
+    "about": "About",
+    "contact": "Contact"
+  },
   "common": {
     "save": "Save",
     "cancel": "Cancel",
     "logout": "Logout"
+  },
+  "courseCatalog": {
+    "title": "Course Catalog",
+    "noCourses": "No courses found. Try changing the filters."
+  },
+  "course": {
+    "video": "Video",
+    "text": "Text",
+    "goToLesson": "Go to lesson",
+    "notFound": "Course not found",
+    "noDescription": "No description",
+    "author": "Author",
+    "lessons": "Lessons",
+    "noLessons": "No lessons in this course yet"
+  },
+  "lesson": {
+    "notFound": "Lesson not found",
+    "previous": "Previous",
+    "next": "Next",
+    "completed": "Completed",
+    "markCompleted": "Mark as completed"
+  },
+  "lessonProgress": {
+    "success": "Lesson marked as completed",
+    "error": "Failed to mark lesson"
+  },
+  "courseCard": {
+    "noDescription": "No description",
+    "progressPercent": "Progress: {{percent}}%",
+    "goToButton": "Open"
+  },
+  "filters": {
+    "search": "Search",
+    "theme": "Theme",
+    "allThemes": "All themes",
+    "sortBy": "Sort by",
+    "noSort": "No sorting",
+    "byTitle": "By title",
+    "byDate": "By date",
+    "order": "Order",
+    "ascending": "Ascending",
+    "descending": "Descending",
+    "clearFilters": "Clear filters"
   }
 }
