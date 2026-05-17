@@ -1,4 +1,5 @@
 const { Course, Lesson, Theme, User } = require('../models');
+const { Op } = require('sequelize');
 
 class CourseRepository {
   async create(data) {
@@ -59,6 +60,32 @@ class CourseRepository {
   async isAuthorOfCourse(courseId, userId) {
     const course = await Course.findByPk(courseId, { attributes: ['author_id'] });
     return course && course.author_id === userId;
+  }
+
+  async findWithPaginationAndFilters({ filters = {}, sortBy, sortOrder, limit, offset }) {
+    const where = {};
+    if (filters.theme_id) where.theme_id = filters.theme_id;
+    if (filters.search) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${filters.search}%` } },
+        { description: { [Op.iLike]: `%${filters.search}%` } },
+      ];
+    }
+    const order = [];
+    if (sortBy === 'title') order.push(['title', sortOrder || 'ASC']);
+    else if (sortBy === 'created_at') order.push(['created_at', sortOrder || 'DESC']);
+    else order.push(['created_at', 'DESC']);
+
+    return await Course.findAndCountAll({
+      where,
+      order,
+      limit,
+      offset,
+      include: [
+        { model: Theme, as: 'theme', attributes: ['id', 'name'] },
+        { model: User, as: 'author', attributes: ['id', 'first_name', 'last_name'] },
+      ],
+    });
   }
 }
 

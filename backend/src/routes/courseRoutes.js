@@ -11,4 +11,12 @@ router.post('/', authMiddleware, allowRoles('trainer', 'admin'), courseControlle
 router.put('/:id', authMiddleware, allowRoles('trainer', 'admin'), courseController.update);
 router.delete('/:id', authMiddleware, allowRoles('trainer', 'admin'), courseController.delete);
 
+router.post(
+  '/:id/cover',
+  authMiddleware,
+  allowRoles('trainer', 'admin'),
+  courseController.uploadCover,
+  courseController.handleUploadCover
+);
+
 module.exports = router;
