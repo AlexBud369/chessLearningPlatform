@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { RegisterForm } from '../../../features/auth-by-email/ui/RegisterForm';
 import { Header } from '../../../widgets/header/Header';
+import { Footer } from '../../../widgets/footer/Footer';
 
 export const RegisterPage = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ export const RegisterPage = () => {
           </Card>
         </Container>
       </Box>
+      <Footer />
     </>
   );
 };

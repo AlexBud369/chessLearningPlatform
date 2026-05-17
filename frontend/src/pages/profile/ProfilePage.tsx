@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Typography, Paper } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Header } from '../../widgets/header/Header';
+import { Footer } from '../../widgets/footer/Footer';
 import { useAppSelector } from '../../shared/lib/hooks';
 
 export const ProfilePage = () => {
@@ -37,6 +38,7 @@ export const ProfilePage = () => {
           </Typography>
         </Paper>
       </Container>
+      <Footer />
     </>
   );
 };

@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react';
+import { Header } from '../../widgets/header/Header';
+import { Footer } from '../../widgets/footer/Footer';
 import { Container, Typography, CircularProgress, Alert, Box } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../../shared/lib/hooks';
-import { fetchCourses } from '../../entities/course/model/store';
+import { useTranslation } from 'react-i18next';
 import { CourseCard } from '../../shared/ui/CourseCard/CourseCard';
 import { CourseFilters } from '../../widgets/courseFilters/CourseFilters';
 import { useCourseFilters } from '../../features/course-filters/model/useCourseFilters';
+import { useCourses } from '../../features/courses/model/useCourses';
 
 export const CourseCatalogPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { courses, loading, error } = useAppSelector((state) => state.courses);
+  const { t } = useTranslation();
   const { filters: activeFilters } = useCourseFilters();
+  const { courses, loading, error, loadCourses } = useCourses();
 
   useEffect(() => {
-    dispatch(fetchCourses(activeFilters));
-  }, [dispatch, activeFilters]);
+    loadCourses(activeFilters);
+  }, [loadCourses, activeFilters]);
 
   if (loading) {
     return (
@@ -32,14 +34,17 @@ export const CourseCatalogPage: React.FC = () => {
   }
 
   return (
-    <Container sx={{ py: 4 }}>
+    <>
+    <Header />
+     <Box component="main" sx={{ flexGrow: 1 }}>
+      <Container sx={{ py: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Каталог курсов
+        {t('courseCatalog.title')}
       </Typography>
       <CourseFilters />
       {courses.length === 0 ? (
         <Typography variant="body1" color="textSecondary">
-          Курсы не найдены. Попробуйте изменить фильтры.
+          {t('courseCatalog.noCourses')}
         </Typography>
       ) : (
         <Box
@@ -61,5 +66,9 @@ export const CourseCatalogPage: React.FC = () => {
         </Box>
       )}
     </Container>
+
+     </Box>
+    <Footer />
+    </>
   );
 };
