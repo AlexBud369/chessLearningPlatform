@@ -25,6 +25,8 @@ export interface Course {
   description: string | null;
   theme_id: number;
   author_id: number;
+  cover_image?: string;
+  isFavorite?: boolean;
   created_at: string;
   updated_at: string;
   theme?: Theme;
@@ -37,6 +39,8 @@ export interface CourseFilters {
   search?: string;
   sortBy?: 'title' | 'created_at';
   sortOrder?: 'ASC' | 'DESC';
+  page?: number;
+  limit?: number;
 }
 
 export interface CourseProgress {
@@ -44,4 +48,11 @@ export interface CourseProgress {
   completedLessons: number;
   totalLessons: number;
   percent: number;
+}
+
+export interface PaginatedCoursesResponse {
+  courses: Course[];
+  total: number;
+  page: number;
+  totalPages: number;
 }
