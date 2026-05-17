@@ -35,9 +35,19 @@ export const useCourseFilters = () => {
     localStorage.removeItem(STORAGE_KEY);
   };
 
+  const setPage = (page: number) => {
+    updateFilter('page', page);
+  };
+
+  const setLimit = (limit: number) => {
+    updateFilter('limit', limit);
+  };
+
   return {
     filters,
     updateFilter,
     clearFilters,
+    setPage,
+    setLimit,
   };
 };

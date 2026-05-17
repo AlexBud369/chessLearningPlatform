@@ -1,18 +1,24 @@
 import { useState, useCallback } from 'react';
-import { coursesApi, Course, CourseFilters } from '../../../shared/api/coursesApi';
+import { coursesApi, Course, CourseFilters, PaginatedCoursesResponse } from '../../../shared/api/coursesApi';
 
 export const useCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [currentCourse, setCurrentCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(1);
 
   const loadCourses = useCallback(async (filters?: CourseFilters) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await coursesApi.fetchCourses(filters);
-      setCourses(data);
+      const response: PaginatedCoursesResponse = await coursesApi.fetchCourses(filters);
+      setCourses(response.courses);
+      setTotal(response.total);
+      setTotalPages(response.totalPages);
+      setPage(response.page);
     } catch (err: any) {
       setError(err.message || 'Failed to fetch courses');
     } finally {
@@ -82,16 +88,35 @@ export const useCourses = () => {
     }
   }, [currentCourse]);
 
+  const uploadCover = useCallback(async (courseId: number, file: File) => {
+    try {
+      setLoading(true);
+      const updatedCourse = await coursesApi.uploadCourseCover(courseId, file);
+      setCourses(prev => prev.map(c => c.id === courseId ? updatedCourse : c));
+      if (currentCourse?.id === courseId) setCurrentCourse(updatedCourse);
+      return updatedCourse;
+    } catch (err: any) {
+      setError(err.message || 'Failed to upload cover');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [currentCourse]);
+
   return {
     courses,
     currentCourse,
     loading,
     error,
+    total,
+    totalPages,
+    page,
     loadCourses,
     loadCourseById,
     clearCurrentCourse,
     createCourse,
     updateCourse,
     deleteCourse,
+    uploadCover,
   };
 };
