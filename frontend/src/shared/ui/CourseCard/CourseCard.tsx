@@ -9,6 +9,7 @@ import {
   Box,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { Course } from '../../api/coursesApi';
 
 interface CourseCardProps {
@@ -18,7 +19,8 @@ interface CourseCardProps {
 
 export const CourseCard: React.FC<CourseCardProps> = ({ course, progressPercent }) => {
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
+  
   const handleOpen = () => {
     navigate(`/courses/${course.id}`);
   };
@@ -39,12 +41,12 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, progressPercent 
           </Typography>
         )}
         <Typography variant="body2" color="textSecondary">
-          {truncatedDescription || 'Нет описания'}
+          {truncatedDescription || t('courseCard.noDescription')}
         </Typography>
         {progressPercent !== undefined && (
           <Box sx={{ mt: 2 }}>
             <Typography variant="caption" color="textSecondary">
-              Прогресс: {progressPercent}%
+              {t('courseCard.progressPercent', { percent: progressPercent })}
             </Typography>
             <LinearProgress variant="determinate" value={progressPercent} sx={{ mt: 0.5 }} />
           </Box>
@@ -52,7 +54,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, progressPercent 
       </CardContent>
       <CardActions>
         <Button size="small" color="primary" onClick={handleOpen}>
-          Перейти
+          {t('courseCard.goToButton')}
         </Button>
       </CardActions>
     </Card>

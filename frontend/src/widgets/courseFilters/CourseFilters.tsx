@@ -10,11 +10,13 @@ import {
   Box,
   SelectChangeEvent,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useCourseFilters } from '../../features/course-filters/model/useCourseFilters';
 import { themesApi, Theme } from '../../shared/api/themesApi';
 import type { CourseFilters as CourseFiltersType } from '../../shared/api/coursesApi';
 
 export const CourseFilters: React.FC = () => {
+  const { t } = useTranslation();
   const { filters, updateFilter, clearFilters } = useCourseFilters();
   const [themes, setThemes] = useState<Theme[]>([]);
   const [searchInput, setSearchInput] = useState(filters.search || '');
@@ -54,7 +56,7 @@ export const CourseFilters: React.FC = () => {
     <Paper sx={{ p: 2, mb: 3 }}>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'center' }}>
         <TextField
-          label="Поиск"
+          label={t('filters.search')}
           variant="outlined"
           size="small"
           value={searchInput}
@@ -62,13 +64,13 @@ export const CourseFilters: React.FC = () => {
           sx={{ minWidth: 200 }}
         />
         <FormControl size="small" sx={{ minWidth: 150 }}>
-          <InputLabel>Тема</InputLabel>
+          <InputLabel>{t('filters.theme')}</InputLabel>
           <Select
             value={filters.theme_id ?? ''}
             onChange={handleThemeChange}
-            label="Тема"
+            label={t('filters.theme')}
           >
-            <MenuItem value="">Все темы</MenuItem>
+            <MenuItem value="">{t('filters.allThemes')}</MenuItem>
             {themes.map((theme) => (
               <MenuItem key={theme.id} value={theme.id}>
                 {theme.name}
@@ -76,33 +78,33 @@ export const CourseFilters: React.FC = () => {
             ))}
           </Select>
         </FormControl>
-        <FormControl size="small" sx={{ minWidth: 120 }}>
-          <InputLabel>Сортировать</InputLabel>
+         <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>{t('filters.sortBy')}</InputLabel>
           <Select
             value={filters.sortBy ?? ''}
             onChange={handleSortByChange}
-            label="Сортировать"
+            label={t('filters.sortBy')}
           >
-            <MenuItem value="">Без сортировки</MenuItem>
-            <MenuItem value="title">По названию</MenuItem>
-            <MenuItem value="created_at">По дате</MenuItem>
+            <MenuItem value="">{t('filters.noSort')}</MenuItem>
+            <MenuItem value="title">{t('filters.byTitle')}</MenuItem>
+            <MenuItem value="created_at">{t('filters.byDate')}</MenuItem>
           </Select>
         </FormControl>
         {filters.sortBy && (
           <FormControl size="small" sx={{ minWidth: 100 }}>
-            <InputLabel>Порядок</InputLabel>
+            <InputLabel>{t('filters.order')}</InputLabel>
             <Select
               value={filters.sortOrder ?? 'ASC'}
               onChange={handleSortOrderChange}
-              label="Порядок"
+              label={t('filters.order')}
             >
-              <MenuItem value="ASC">Возрастание</MenuItem>
-              <MenuItem value="DESC">Убывание</MenuItem>
+              <MenuItem value="ASC">{t('filters.ascending')}</MenuItem>
+              <MenuItem value="DESC">{t('filters.descending')}</MenuItem>
             </Select>
           </FormControl>
         )}
         <Button variant="outlined" onClick={clearFilters}>
-          Сбросить фильтры
+          {t('filters.clearFilters')}
         </Button>
       </Box>
     </Paper>
