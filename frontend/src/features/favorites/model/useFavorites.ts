@@ -1,51 +1,88 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../app/store';
-import { setFavorites, addFavorite, removeFavorite } from '../../../entities/favorite/model/favoritesSlice';
-import { favoritesApi } from '../../../shared/api/favoritesApi';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { RootState } from '../../../app/store';
+import {
+  setCoursesFavorites,
+  setTasksFavorites,
+  addCourseFavorite,
+  removeCourseFavorite,
+  addTaskFavorite,
+  removeTaskFavorite,
+} from '../../../entities/favorite/model/favoritesSlice';
+import { favoritesApi } from '../../../shared/api/favoritesApi';
 
-export const useFavorites = () => {
+type FavoriteType = 'course' | 'task';
+
+export const useFavorites = (itemType: FavoriteType = 'course') => {
   const dispatch = useDispatch();
-  const favoriteIds = useSelector((state: RootState) => state.favorites.favoriteIds);
+  const { t } = useTranslation();
+
+  const courseIds = useSelector((state: RootState) => state.favorites.courseIds);
+  const taskIds = useSelector((state: RootState) => state.favorites.taskIds);
+
+  const currentIds = itemType === 'course' ? courseIds : taskIds;
 
   const loadFavorites = useCallback(async () => {
     try {
-      const favorites = await favoritesApi.getFavorites('course');
-      const ids = favorites.map(fav => fav.item_id);
-      dispatch(setFavorites(ids));
-    } catch (error) {
-      console.error('Failed to load favorites', error);
-    }
-  }, [dispatch]);
+      const favorites = await favoritesApi.getFavorites(itemType);
+      const ids = favorites.map((fav) => fav.item_id);
 
-  const toggleFavorite = useCallback(async (courseId: number) => {
-    const isFav = favoriteIds.includes(courseId);
-    try {
-      if (isFav) {
-        await favoritesApi.removeFavorite('course', courseId);
-        dispatch(removeFavorite(courseId));
-        toast.success('Removed from favorites');
+      if (itemType === 'course') {
+        dispatch(setCoursesFavorites(ids));
       } else {
-        await favoritesApi.addFavorite('course', courseId);
-        dispatch(addFavorite(courseId));
-        toast.success('Added to favorites');
+        dispatch(setTasksFavorites(ids));
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update favorites');
+    } catch (error) {
+      console.error(`Failed to load ${itemType} favorites`, error);
     }
-  }, [dispatch, favoriteIds]);
+  }, [dispatch, itemType]);
 
-  const isFavorite = useCallback((courseId: number) => {
-    return favoriteIds.includes(courseId);
-  }, [favoriteIds]);
+  const toggleFavorite = useCallback(
+    async (itemId: number) => {
+      const isFav = currentIds.includes(itemId);
+
+      try {
+        if (isFav) {
+          await favoritesApi.removeFavorite(itemType, itemId);
+
+          if (itemType === 'course') {
+            dispatch(removeCourseFavorite(itemId));
+          } else {
+            dispatch(removeTaskFavorite(itemId));
+          }
+
+          toast.success(t('favorites.removed'));
+        } else {
+          await favoritesApi.addFavorite(itemType, itemId);
+
+          if (itemType === 'course') {
+            dispatch(addCourseFavorite(itemId));
+          } else {
+            dispatch(addTaskFavorite(itemId));
+          }
+
+          toast.success(t('favorites.added'));
+        }
+      } catch (error: any) {
+        toast.error(error.message || t('favorites.error'));
+      }
+    },
+    [dispatch, currentIds, itemType, t]
+  );
+
+  const isFavorite = useCallback(
+    (itemId: number) => currentIds.includes(itemId),
+    [currentIds]
+  );
 
   useEffect(() => {
     loadFavorites();
   }, [loadFavorites]);
 
   return {
-    favoriteIds,
+    favoriteIds: currentIds,
     toggleFavorite,
     isFavorite,
     loadFavorites,
