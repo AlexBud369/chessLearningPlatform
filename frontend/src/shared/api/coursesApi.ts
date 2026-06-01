@@ -6,6 +6,7 @@ export interface Course {
   description: string | null;
   theme_id: number;
   author_id: number;
+  difficulty: number;
   cover_image?: string;
   created_at: string;
   updated_at: string;
@@ -26,11 +27,15 @@ export interface Lesson {
   updated_at: string;
 }
 
+export type CompletionStatus = 'completed' | 'not_completed';
+
 export interface CourseFilters {
   theme_id?: number;
   search?: string;
-  sortBy?: 'title' | 'created_at';
+  difficulty?: number;
+  sortBy?: 'title' | 'created_at' | 'difficulty';
   sortOrder?: 'ASC' | 'DESC';
+  status?: CompletionStatus;
   page?: number;
   limit?: number;
 }
@@ -47,8 +52,10 @@ export const coursesApi = {
     const params = new URLSearchParams();
     if (filters?.theme_id) params.append('theme_id', String(filters.theme_id));
     if (filters?.search) params.append('search', filters.search);
+    if (filters?.difficulty) params.append('difficulty', String(filters.difficulty));
     if (filters?.sortBy) params.append('sortBy', filters.sortBy);
     if (filters?.sortOrder) params.append('sortOrder', filters.sortOrder);
+    if (filters?.status) params.append('status', filters.status);
     if (filters?.page) params.append('page', String(filters.page));
     if (filters?.limit) params.append('limit', String(filters.limit));
     const response = await axiosInstance.get(`/courses?${params.toString()}`);

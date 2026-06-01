@@ -1,10 +1,22 @@
 import { axiosInstance } from './axiosInstance';
 import { Favorite } from '../types/favorite';
+import type { Course } from './coursesApi';
+import type { Task } from '../types/task';
+
+export interface FavoritesDetailsResponse {
+  courses: Course[];
+  tasks: Task[];
+}
 
 export const favoritesApi = {
   getFavorites: async (itemType?: string): Promise<Favorite[]> => {
     const params = itemType ? `?itemType=${itemType}` : '';
     const response = await axiosInstance.get(`/favorites${params}`);
+    return response.data;
+  },
+
+  getFavoritesDetails: async (): Promise<FavoritesDetailsResponse> => {
+    const response = await axiosInstance.get('/favorites?detailed=true');
     return response.data;
   },
 
