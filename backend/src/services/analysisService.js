@@ -1,11 +1,11 @@
 const analysisNodeRepository = require('../repositories/analysisNodeRepository');
-const gameRepository = require('../repositories/gameRepository');
+const gameAccessService = require('./gameAccessService');
 
 class AnalysisService {
-  async getAnalysisTree(gameId) {
+  async getAnalysisTree(gameId, user) {
+    await gameAccessService.assertCanRead(gameId, user);
     const nodes = await analysisNodeRepository.findByGameId(gameId);
-    const tree = this.buildTree(nodes);
-    return tree;
+    return this.buildTree(nodes);
   }
 
   buildTree(nodes, parentId = null) {
@@ -59,19 +59,27 @@ class AnalysisService {
     await analysisNodeRepository.deleteByGameId(gameId);
   }
 
-  async saveFullTree(gameId, userId, nodesData) {
+  async saveFullTree(gameId, user, nodesData) {
+    await gameAccessService.assertCanWrite(gameId, user);
     await this.deleteAllNodesForGame(gameId);
-    const nodesToCreate = nodesData.map(node => ({
-      game_id: gameId,
-      user_id: userId,
-      parent_id: node.parent_id,
-      fen: node.fen,
-      move_from: node.move_from,
-      move_to: node.move_to,
-      comment: node.comment,
-      is_main: node.is_main,
-    }));
-    return await analysisNodeRepository.createMany(nodesToCreate);
+    const created = [];
+
+    for (const nodeData of nodesData) {
+      const parent_id = created.length === 0 ? null : created[created.length - 1].id;
+      const node = await analysisNodeRepository.create({
+        game_id: gameId,
+        user_id: user.id,
+        parent_id,
+        fen: nodeData.fen,
+        move_from: nodeData.move_from || null,
+        move_to: nodeData.move_to || null,
+        comment: nodeData.comment || null,
+        is_main: nodeData.is_main ?? true,
+      });
+      created.push(node);
+    }
+
+    return created;
   }
 }
 

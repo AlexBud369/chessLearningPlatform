@@ -7,7 +7,7 @@ class LessonService {
     if (!course) {
       throw new Error('Course not found');
     }
-    if (course.author_id !== user.id && user.role !== 'admin') {
+    if (course.author_id !== user.id) {
       throw new Error('Forbidden: you can only add lessons to your own courses');
     }
     return await lessonRepository.create(lessonData);
@@ -35,7 +35,7 @@ class LessonService {
       throw new Error('Lesson not found');
     }
     const course = await courseRepository.findById(lesson.course_id);
-    if (course.author_id !== user.id && user.role !== 'admin') {
+    if (course.author_id !== user.id) {
       throw new Error('Forbidden: you can only edit lessons in your own courses');
     }
     return await lessonRepository.update(id, updateData);
@@ -47,7 +47,7 @@ class LessonService {
       throw new Error('Lesson not found');
     }
     const course = await courseRepository.findById(lesson.course_id);
-    if (course.author_id !== user.id && user.role !== 'admin') {
+    if (course.author_id !== user.id) {
       throw new Error('Forbidden: you can only delete lessons from your own courses');
     }
     return await lessonRepository.delete(id);

@@ -18,8 +18,8 @@ class ThemeService {
   }
 
   async updateTheme(id, updateData, userRole) {
-    if (!['trainer', 'admin'].includes(userRole)) {
-      throw new Error('Forbidden: only trainers and admins can update themes');
+    if (userRole !== 'trainer') {
+      throw new Error('Forbidden: only trainers can update themes');
     }
     const theme = await themeRepository.findById(id);
     if (!theme) {
@@ -29,8 +29,8 @@ class ThemeService {
   }
 
   async deleteTheme(id, userRole) {
-    if (!['trainer', 'admin'].includes(userRole)) {
-      throw new Error('Forbidden: only trainers and admins can delete themes');
+    if (userRole !== 'trainer') {
+      throw new Error('Forbidden: only trainers can delete themes');
     }
     const theme = await themeRepository.findById(id);
     if (!theme) {

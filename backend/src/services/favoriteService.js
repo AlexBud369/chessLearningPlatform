@@ -1,4 +1,5 @@
 const favoriteRepository = require('../repositories/favoriteRepository');
+const { Course, Task, Theme } = require('../models');
 
 class FavoriteService {
   async addFavorite(userId, itemType, itemId) {
@@ -19,6 +20,29 @@ class FavoriteService {
 
   async getUserFavorites(userId, itemType = null) {
     return await favoriteRepository.findAllByUser(userId, itemType);
+  }
+
+  async getUserFavoritesWithDetails(userId) {
+    const favorites = await favoriteRepository.findAllByUser(userId);
+    const courseIds = favorites.filter((f) => f.item_type === 'course').map((f) => f.item_id);
+    const taskIds = favorites.filter((f) => f.item_type === 'task').map((f) => f.item_id);
+
+    const [courses, tasks] = await Promise.all([
+      courseIds.length
+        ? Course.findAll({
+            where: { id: courseIds },
+            include: [{ model: Theme, as: 'theme', attributes: ['id', 'name'] }],
+          })
+        : [],
+      taskIds.length
+        ? Task.findAll({
+            where: { id: taskIds },
+            include: [{ model: Theme, as: 'theme', attributes: ['id', 'name'] }],
+          })
+        : [],
+    ]);
+
+    return { courses, tasks };
   }
 
   async isFavorite(userId, itemType, itemId) {

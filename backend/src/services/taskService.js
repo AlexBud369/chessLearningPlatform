@@ -3,12 +3,14 @@ const userTaskResultRepository = require('../repositories/userTaskResultReposito
 const { Chess } = require('chess.js');
 
 class TaskService {
-  async getAllTasks(filters, page = 1, limit = 10) {
+  async getAllTasks(filters, page = 1, limit = 10, userId, status) {
     const offset = (page - 1) * limit;
     return await taskRepository.findAllWithFilters({
       ...filters,
       limit,
       offset,
+      userId,
+      status,
     });
   }
 
@@ -70,6 +72,16 @@ class TaskService {
 
   async getUserTaskResult(userId, taskId) {
     return await userTaskResultRepository.findByUserAndTask(userId, taskId);
+  }
+
+  async completeTask(userId, taskId) {
+    const task = await taskRepository.findById(taskId);
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    await userTaskResultRepository.incrementAttempts(userId, taskId);
+    await userTaskResultRepository.markSolved(userId, taskId);
+    return { correct: true, solved: true };
   }
 }
 
