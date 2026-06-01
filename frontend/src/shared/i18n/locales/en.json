@@ -44,23 +44,128 @@
   },
   "profile": {
     "title": "Profile",
+    "infoTitle": "Personal information",
     "firstName": "First name",
     "lastName": "Last name",
     "email": "Email",
     "role": "Role",
     "role_player": "Player",
     "role_trainer": "Trainer",
-    "role_admin": "Administrator"
+    "role_admin": "Administrator",
+    "tabs": {
+      "info": "General",
+      "myCourses": "My courses",
+      "progress": "Progress",
+      "favorites": "Favorites",
+      "games": "My games",
+      "trainer": "Trainer panel",
+      "admin": "User management"
+    },
+    "progress": {
+      "title": "Task solving dynamics",
+      "period": "Period",
+      "days": "{{count}} days",
+      "totalInPeriod": "Tasks solved in {{days}} days: {{count}}",
+      "solvedTasks": "Tasks solved",
+      "empty": "No tasks were solved in the selected period",
+      "loadError": "Failed to load progress chart"
+    },
+    "trainer": {
+      "myStudents": "My students",
+      "noStudents": "You have no students yet",
+      "assignCourse": "Assign course to student",
+      "assignHint": "Select a student from your list and a course to assign",
+      "progressLoadError": "Failed to load student progress",
+      "studentName": "Student",
+      "courseProgress": "Course progress",
+      "solvedTasks": "Tasks solved",
+      "lastActivity": "Last activity",
+      "coursesCompleted": "Courses completed: {{completed}} / {{total}}",
+      "subTabs": {
+        "progress": "Student progress",
+        "students": "My students",
+        "assign": "Assign course",
+        "content": "Content"
+      }
+    },
+    "admin": {
+      "description": "Block and unblock platform users",
+      "status": "Status",
+      "actions": "Actions",
+      "block": "Block",
+      "unblock": "Unblock",
+      "blocked": "User blocked",
+      "unblocked": "User unblocked",
+      "blockedStatus": "Blocked",
+      "activeStatus": "Active",
+      "loadError": "Failed to load users",
+      "updateError": "Failed to update user status"
+    }
   },
   "home": {
-    "title": "Welcome to Chess Learning Platform"
+    "title": "Welcome to Chess Learning Platform",
+    "subtitle": "Learn chess with courses, puzzles, and game analysis — from your first moves to deep positional understanding",
+    "ctaRegister": "Get started",
+    "ctaCourses": "Browse courses",
+    "howToTitle": "How to use the platform",
+    "howToIntro": "Six simple steps — from sign-up to analyzing your games and tracking progress.",
+    "stepLabel": "Step {{number}}",
+    "steps": [
+      {
+        "title": "Create an account",
+        "text": "Register or sign in as a player, trainer, or administrator."
+      },
+      {
+        "title": "Pick a course",
+        "text": "Open the course catalog, filter by theme and difficulty, and complete lessons at your pace."
+      },
+      {
+        "title": "Solve puzzles",
+        "text": "Train tactics on the interactive board in the task catalog — every move is validated."
+      },
+      {
+        "title": "Analyze games",
+        "text": "Upload a PGN or enter moves on the board, add comments and variations in the move tree."
+      },
+      {
+        "title": "Track progress",
+        "text": "In your profile view completed courses, favorites, task charts, and PDF reports."
+      },
+      {
+        "title": "Work with a trainer",
+        "text": "Share games with your coach, read move comments, and follow assigned courses."
+      }
+    ],
+    "trainerBlockTitle": "Are you a coach?",
+    "trainerBlockText": "In the Trainer panel in your profile you can assign courses, monitor student progress, and download summary reports.",
+    "trainerBlockCta": "Go to profile"
   },
   "header": {
     "title": "Chess Learning",
+    "home": "Home",
+    "courses": "Courses",
+    "tasks": "Tasks",
+    "analysis": "Analysis",
     "profile": "Profile",
     "logout": "Logout",
+    "logoutConfirmTitle": "Sign out",
+    "logoutConfirmMessage": "Are you sure you want to sign out?",
+    "logoutConfirmYes": "Sign out",
+    "logoutConfirmNo": "Cancel",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "menu": "Menu",
+    "resetSettings": "Reset settings"
+  },
+  "settings": {
+    "resetSuccess": "Settings reset"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "courses": "Courses",
+    "course": "Course",
+    "tasks": "Tasks",
+    "analysis": "Analysis"
   },
   "footer": {
     "copyright": "© {{year}} Chess Learning Platform. All rights reserved.",
@@ -110,9 +215,262 @@
     "noSort": "No sorting",
     "byTitle": "By title",
     "byDate": "By date",
+    "byDifficulty": "By difficulty",
+    "difficulty": "Difficulty",
+    "allDifficulties": "All levels",
     "order": "Order",
     "ascending": "Ascending",
     "descending": "Descending",
-    "clearFilters": "Clear filters"
+    "clearFilters": "Clear filters",
+    "reset": "Reset",
+    "status": "Status",
+    "allStatuses": "All",
+    "completed": "Completed",
+    "notCompleted": "Not completed"
+  },
+  "tasks": {
+    "catalog": {
+      "title": "Tasks Catalog",
+      "search": "Search",
+      "searchPlaceholder": "Title, FEN, theme or ID",
+      "difficulty": "Difficulty",
+      "empty": "No tasks found. Try changing the filters."
+    },
+    "difficulty": {
+      "all": "All levels",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "navigation": {
+      "backToCatalog": "Back to tasks catalog"
+    },
+    "taskNumber": "Task #{{id}}",
+    "task": {
+      "initialFen": "Initial position (FEN)",
+      "currentFen": "Current position (FEN)"
+    },
+    "solve": {
+      "enterMove": "Make a move on the board",
+      "makeMoveOnBoard": "Drag a piece on the board to make your move",
+      "progress": "Progress: {{current}}",
+      "movePlaceholder": "Example: Qh7# or Nf3",
+      "check": "Check",
+      "reset": "Reset",
+      "showHint": "Show hint",
+      "hint": "Hint",
+      "correct": "Correct",
+      "wrong": "Wrong"
+    },
+    "errors": {
+      "loadList": "Failed to load tasks list",
+      "loadOne": "Failed to load task",
+      "solve": "Failed to check solution",
+      "notFound": "Task not found",
+      "loadDifficulties": "Failed to load difficulty levels"
+    },
+    "board": {
+      "tabPosition": "Position",
+      "tabSolution": "Solution",
+      "positionHint": "Drag pieces to set the starting position. Click «Set start position».",
+      "solutionHint": "Play the correct line on the board — moves will be saved as the solution.",
+      "setStartPosition": "Set start position",
+      "resetStandard": "Standard position",
+      "undoMove": "Undo move",
+      "clearSolution": "Clear solution",
+      "startPositionSet": "Start position saved",
+      "invalidFen": "Invalid FEN",
+      "illegalMove": "Illegal move",
+      "playerSide": "Player to move (student)",
+      "noSolutionYet": "Play the solution on the board"
+    }
+  },
+  "boardControls": {
+    "flipBoard": "Flip board",
+    "switchTurn": "Switch side to move",
+    "switchTurnAtStart": "Side to move can only be changed at the start position"
+  },
+  "reports": {
+    "downloadStudent": "Download report (PDF)",
+    "downloadTrainerPdf": "Download report (PDF)",
+    "downloadTrainerExcel": "Download report (Excel)",
+    "studentDownloaded": "PDF report generated",
+    "trainerPdfDownloaded": "Students PDF report generated",
+    "trainerExcelDownloaded": "Students Excel report generated",
+    "downloadError": "Failed to generate report"
+  },
+  "games": {
+    "myGames": "My games",
+    "upload": "Upload PGN",
+    "uploaded": "Game uploaded",
+    "uploadError": "Failed to upload game",
+    "loadError": "Failed to load games",
+    "deleteError": "Failed to delete game",
+    "deleted": "Game deleted",
+    "confirmDelete": "Delete this game?",
+    "empty": "No games yet. Upload a PGN file.",
+    "pgnRequired": "Enter PGN",
+    "titleCol": "Title",
+    "dateCol": "Date",
+    "sharedCol": "To trainer",
+    "statusCol": "Status",
+    "yes": "Yes",
+    "no": "No",
+    "trainerReplied": "Trainer replied",
+    "openAnalysis": "Open analysis",
+    "studentNote": "Question / comment",
+    "shareWithTrainer": "Share with trainer",
+    "studentGames": "Student games",
+    "studentGamesTitle": "Student #{{id}} games",
+    "studentGamesHint": "Games the student shared with you.",
+    "studentGamesEmpty": "No games shared by this student."
+  },
+  "analysis": {
+    "title": "Game Analysis",
+    "back": "Back",
+    "position": "Current position",
+    "turn": "Turn",
+    "white": "White",
+    "black": "Black",
+    "moveList": "Move List",
+    "noMoves": "No moves loaded. Upload a PGN to start analysis.",
+    "playOnBoardHint": "Make moves on the board to enter a game from scratch, then save.",
+    "startPosition": "Start position",
+    "comment": "Comment",
+    "commentPlaceholder": "Enter a comment for the selected move...",
+    "saveComment": "Save comment",
+    "cancelComment": "Cancel",
+    "commentSaved": "Comment saved",
+    "variationTree": "Variation tree",
+    "loadPgn": "Load PGN",
+    "save": "Save",
+    "saved": "Game saved successfully",
+    "saveError": "Failed to save game",
+    "noPgn": "No PGN loaded",
+    "loaded": "PGN loaded successfully",
+    "parseError": "Failed to parse PGN",
+    "loadError": "Failed to load game",
+    "gameNumber": "Game #{{id}}",
+    "upload": {
+      "title": "Load PGN",
+      "pasteTab": "Paste text",
+      "fileTab": "Upload file",
+      "pastePlaceholder": "Paste PGN text here...",
+      "chooseFile": "Choose file",
+      "submit": "Load",
+      "empty": "PGN text is empty",
+      "invalidFormat": "Only .pgn and .txt files are supported",
+      "tooLarge": "File is too large (max 1 MB)"
+    }
+  },
+  "assign": {
+    "title": "Assign Course to Student",
+    "selectCourse": "Select Course",
+    "selectCourses": "Select one or more courses",
+    "course": "Course",
+    "coursePlaceholder": "Search course by name...",
+    "assignStudent": "Assign a Student",
+    "student": "Student",
+    "studentPlaceholder": "Search student...",
+    "assignButton": "Assign",
+    "enrolledStudents": "Enrolled Students",
+    "noStudents": "No students enrolled in this course yet",
+    "removeStudent": "Remove student",
+    "removeAssignment": "Remove assignment",
+    "success": "Course assigned successfully",
+    "error": "Failed to assign course",
+    "removed": "Assignment removed",
+    "removeError": "Failed to remove assignment",
+    "alreadyAssigned": "This course is already assigned to this student",
+    "skippedAlreadyAssigned": "Skipped courses already assigned to this student: {{count}}",
+    "loadCoursesError": "Failed to load courses",
+    "loadStudentsError": "Failed to load students",
+    "loadMyCoursesError": "Failed to load assigned courses",
+    "loadAssignmentsError": "Failed to load assignments",
+    "currentAssignments": "Current assignments",
+    "noAssignments": "No assignments yet",
+    "assignedAt": "Assigned at"
+  },
+  "trainerContent": {
+    "tabCourses": "Courses",
+    "tabLessons": "Lessons",
+    "tabTasks": "Tasks",
+    "coursesTitle": "Manage courses",
+    "lessonsTitle": "Manage lessons",
+    "tasksTitle": "Manage tasks",
+    "addCourse": "Add course",
+    "editCourse": "Edit course",
+    "addLesson": "Add lesson",
+    "editLesson": "Edit lesson",
+    "addTask": "Add task",
+    "editTask": "Edit task",
+    "name": "Title",
+    "description": "Description",
+    "contentType": "Content type",
+    "typeText": "Text",
+    "typeVideo": "Video",
+    "content": "Content",
+    "orderIndex": "Order",
+    "solution": "Solution (SAN)",
+    "selectCourse": "Select course",
+    "noLessons": "No lessons in this course yet",
+    "courseCreated": "Course created",
+    "courseUpdated": "Course updated",
+    "lessonCreated": "Lesson created",
+    "lessonUpdated": "Lesson updated",
+    "taskCreated": "Task created",
+    "taskUpdated": "Task updated",
+    "deleted": "Deleted",
+    "loadError": "Failed to load data",
+    "saveError": "Failed to save",
+    "deleteError": "Failed to delete",
+    "fillRequired": "Fill in required fields",
+    "selectTheme": "Select a theme",
+    "solutionRequired": "Record the solution on the board (Solution tab)",
+    "confirmDelete": "Delete this item?"
+  },
+  "trainerStudents": {
+    "title": "Manage students",
+    "searchPlayer": "Search student by email or name",
+    "searchHint": "Enter at least 2 characters",
+    "noResults": "No students found",
+    "addButton": "Add student",
+    "removeButton": "Remove",
+    "name": "Name",
+    "email": "Email",
+    "actions": "Actions",
+    "empty": "Student list is empty. Search and add a student.",
+    "added": "Student added",
+    "addError": "Failed to add student",
+    "removed": "Student removed from list",
+    "removeError": "Failed to remove student",
+    "loadError": "Failed to load student list",
+    "searchError": "Search failed"
+  },
+  "difficulty": {
+    "level1": "Level 1",
+    "level2": "Level 2",
+    "level3": "Level 3",
+    "level4": "Level 4",
+    "level5": "Level 5"
+  },
+  "myCourses": {
+    "title": "My Courses",
+    "empty": "You have no assigned courses yet",
+    "unknownCourse": "Unknown course",
+    "assignedBy": "Assigned by"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "coursesTab": "Courses ({{count}})",
+    "tasksTab": "Tasks ({{count}})",
+    "emptyCourses": "No favorite courses",
+    "emptyTasks": "No favorite tasks",
+    "loadError": "Failed to load favorites",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites",
+    "added": "Added to favorites",
+    "removed": "Removed from favorites",
+    "error": "Failed to update favorites"
   }
 }
