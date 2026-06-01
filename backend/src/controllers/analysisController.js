@@ -3,7 +3,7 @@ const analysisService = require('../services/analysisService');
 class AnalysisController {
   async getTree(req, res, next) {
     try {
-      const tree = await analysisService.getAnalysisTree(req.params.gameId);
+      const tree = await analysisService.getAnalysisTree(req.params.gameId, req.user);
       res.json(tree);
     } catch (error) {
       next(error);
@@ -40,7 +40,7 @@ class AnalysisController {
   async saveFullTree(req, res, next) {
     try {
       const { nodes } = req.body;
-      const savedNodes = await analysisService.saveFullTree(req.params.gameId, req.user.id, nodes);
+      const savedNodes = await analysisService.saveFullTree(req.params.gameId, req.user, nodes);
       res.json(savedNodes);
     } catch (error) {
       next(error);

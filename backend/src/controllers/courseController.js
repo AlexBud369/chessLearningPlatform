@@ -13,14 +13,36 @@ class CourseController {
 
   async getAll(req, res, next) {
     try {
-      const { page = 1, limit = 10, theme_id, search, sortBy, sortOrder } = req.query;
+      const { page = 1, limit = 10, theme_id, search, sortBy, sortOrder, status, difficulty } = req.query;
       const filters = { theme_id, search };
+
+      if (difficulty) {
+        const parsedDifficulty = parseInt(difficulty, 10);
+        if (parsedDifficulty >= 1 && parsedDifficulty <= 5) {
+          filters.difficulty = parsedDifficulty;
+        }
+      }
+
+      if (status && !req.user) {
+        return res.status(401).json({ message: 'Authentication required for status filter' });
+      }
+
+      if (status && !['completed', 'not_completed'].includes(status)) {
+        return res.status(400).json({ message: 'Invalid status filter value' });
+      }
+
+      if (sortBy && !['title', 'created_at', 'difficulty'].includes(sortBy)) {
+        return res.status(400).json({ message: 'Invalid sortBy value' });
+      }
+
       const result = await courseService.getAllCourses(
         filters,
         sortBy,
         sortOrder,
         parseInt(page),
-        parseInt(limit)
+        parseInt(limit),
+        req.user?.id,
+        status
       );
       res.json(result);
     } catch (error) {

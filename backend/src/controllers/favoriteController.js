@@ -3,7 +3,11 @@ const favoriteService = require('../services/favoriteService');
 class FavoriteController {
   async getUserFavorites(req, res, next) {
     try {
-      const { itemType } = req.query;
+      const { itemType, detailed } = req.query;
+      if (detailed === 'true') {
+        const result = await favoriteService.getUserFavoritesWithDetails(req.user.id);
+        return res.json(result);
+      }
       const favorites = await favoriteService.getUserFavorites(req.user.id, itemType);
       res.json(favorites);
     } catch (error) {

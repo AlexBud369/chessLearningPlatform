@@ -55,6 +55,32 @@ class AssignedCourseController {
       next(error);
     }
   }
+
+  async getTrainerAssignments(req, res, next) {
+    try {
+      const assignments = await assignedCourseService.getTrainerAssignments(req.user.id);
+      res.json(assignments);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async assignBulk(req, res, next) {
+    try {
+      const { studentId, courseIds } = req.body;
+      if (!studentId || !Array.isArray(courseIds) || courseIds.length === 0) {
+        return res.status(400).json({ message: 'studentId and courseIds array are required' });
+      }
+      const assignments = await assignedCourseService.assignCoursesBulk(
+        req.user.id,
+        studentId,
+        courseIds
+      );
+      res.status(201).json(assignments);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new AssignedCourseController();

@@ -1,4 +1,5 @@
 const userProgressService = require('../services/userProgressService');
+const userTaskResultRepository = require('../repositories/userTaskResultRepository');
 
 class UserProgressController {
   async markLessonCompleted(req, res, next) {
@@ -52,6 +53,16 @@ class UserProgressController {
       const { userId } = req.params;
       const summary = await userProgressService.getUserProgressSummary(userId);
       res.json(summary);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getTaskChart(req, res, next) {
+    try {
+      const days = Math.min(Math.max(parseInt(req.query.days, 10) || 30, 7), 90);
+      const timeline = await userTaskResultRepository.getTaskSolvingTimeline(req.user.id, days);
+      res.json({ days, timeline });
     } catch (error) {
       next(error);
     }
