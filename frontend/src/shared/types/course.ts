@@ -25,6 +25,7 @@ export interface Course {
   description: string | null;
   theme_id: number;
   author_id: number;
+  difficulty?: number;
   cover_image?: string;
   isFavorite?: boolean;
   created_at: string;
@@ -37,7 +38,8 @@ export interface Course {
 export interface CourseFilters {
   theme_id?: number;
   search?: string;
-  sortBy?: 'title' | 'created_at';
+  sortBy?: 'title' | 'created_at' | 'difficulty';
+  difficulty?: number;
   sortOrder?: 'ASC' | 'DESC';
   page?: number;
   limit?: number;
