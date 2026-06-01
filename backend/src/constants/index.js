@@ -23,7 +23,11 @@ const THEME = {
 const COURSE = {
   TITLE_MAX_LENGTH: 200,
   DESCRIPTION_MAX_LENGTH: 1000,
+  DIFFICULTY_MIN: 1,
+  DIFFICULTY_MAX: 5,
 };
+
+const DIFFICULTY_LEVELS = [1, 2, 3, 4, 5];
 
 const LESSON = {
   TITLE_MAX_LENGTH: 200,
@@ -33,7 +37,9 @@ const LESSON = {
 const TASK = {
   FEN_MAX_LENGTH: 100,
   SOLUTION_MAX_LENGTH: 500,
-  DIFFICULTY_VALUES: ['beginner', 'intermediate', 'advanced'],
+  TITLE_MAX_LENGTH: 200,
+  DIFFICULTY_MIN: 1,
+  DIFFICULTY_MAX: 5,
 };
 
 module.exports = {
@@ -44,6 +50,6 @@ module.exports = {
   COURSE,
   LESSON,
   TASK,
-  
+  DIFFICULTY_LEVELS,
 };
 
