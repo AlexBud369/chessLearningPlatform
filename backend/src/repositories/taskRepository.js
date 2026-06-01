@@ -1,8 +1,15 @@
-const { Task, Theme, UserTaskResult } = require('../models');
+const { Task, Theme } = require('../models');
 const { Op } = require('sequelize');
+const sequelize = require('../config/database');
+
+const buildSolvedTasksSubquery = (userId) => `(
+  SELECT task_id
+  FROM user_task_results
+  WHERE user_id = ${Number(userId)} AND solved = true
+)`;
 
 class TaskRepository {
-  async findAllWithFilters({ difficulty, themeId, search, limit = 10, offset = 0 }) {
+  async findAllWithFilters({ difficulty, themeId, search, limit = 10, offset = 0, userId, status }) {
     const where = {};
 
     if (difficulty) {
@@ -14,10 +21,27 @@ class TaskRepository {
     }
 
     if (search) {
-      where[Op.or] = [
+      const searchConditions = [
+        { title: { [Op.iLike]: `%${search}%` } },
         { fen: { [Op.iLike]: `%${search}%` } },
         { solution: { [Op.iLike]: `%${search}%` } },
+        { '$theme.name$': { [Op.iLike]: `%${search}%` } },
       ];
+
+      if (/^\d+$/.test(search.trim())) {
+        searchConditions.push({ id: parseInt(search.trim(), 10) });
+      }
+
+      where[Op.or] = searchConditions;
+    }
+
+    if (status && userId) {
+      const solvedSubquery = buildSolvedTasksSubquery(userId);
+      if (status === 'completed') {
+        where.id = { [Op.in]: sequelize.literal(solvedSubquery) };
+      } else if (status === 'not_completed') {
+        where.id = { [Op.notIn]: sequelize.literal(solvedSubquery) };
+      }
     }
 
     const { count, rows } = await Task.findAndCountAll({
@@ -32,6 +56,8 @@ class TaskRepository {
       limit,
       offset,
       order: [['created_at', 'DESC']],
+      distinct: true,
+      subQuery: false,
     });
 
     return { total: count, tasks: rows };

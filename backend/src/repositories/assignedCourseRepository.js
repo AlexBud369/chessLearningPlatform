@@ -64,6 +64,25 @@ class AssignedCourseRepository {
     });
     return !!assignment;
   }
+
+  async getAssignmentsByTrainer(trainerId) {
+    return await AssignedCourse.findAll({
+      where: { assigned_by: trainerId },
+      include: [
+        {
+          model: Course,
+          as: 'course',
+          attributes: ['id', 'title', 'description', 'cover_image', 'difficulty'],
+        },
+        {
+          model: User,
+          as: 'student',
+          attributes: ['id', 'first_name', 'last_name', 'email'],
+        },
+      ],
+      order: [['assigned_at', 'DESC']],
+    });
+  }
 }
 
 module.exports = new AssignedCourseRepository();

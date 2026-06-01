@@ -7,7 +7,7 @@ class GameRepository {
 
   async findById(id) {
     return await Game.findByPk(id, {
-      include: [{ association: 'user', attributes: ['id', 'username', 'role'] }],
+      include: [{ association: 'user', attributes: ['id', 'first_name', 'last_name', 'email', 'role'] }],
     });
   }
 
@@ -16,7 +16,18 @@ class GameRepository {
       where: { user_id: userId },
       limit,
       offset,
-      order: [['uploaded_at', 'DESC']],
+      order: [['updated_at', 'DESC']],
+    });
+    return { total: count, games: rows };
+  }
+
+  async findSharedByStudentId(studentId, { limit = 20, offset = 0 }) {
+    const { count, rows } = await Game.findAndCountAll({
+      where: { user_id: studentId, shared_with_trainer: true },
+      limit,
+      offset,
+      order: [['updated_at', 'DESC']],
+      include: [{ association: 'user', attributes: ['id', 'first_name', 'last_name', 'email', 'role'] }],
     });
     return { total: count, games: rows };
   }
