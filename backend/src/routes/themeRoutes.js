@@ -7,8 +7,8 @@ const { allowRoles } = require('../middleware/role.middleware');
 router.get('/', themeController.getAll);
 router.get('/:id', themeController.getById);
 
-router.post('/', authMiddleware, allowRoles('trainer', 'admin'), themeController.create);
-router.put('/:id', authMiddleware, allowRoles('trainer', 'admin'), themeController.update);
-router.delete('/:id', authMiddleware, allowRoles('trainer', 'admin'), themeController.delete);
+router.post('/', authMiddleware, allowRoles('trainer'), themeController.create);
+router.put('/:id', authMiddleware, allowRoles('trainer'), themeController.update);
+router.delete('/:id', authMiddleware, allowRoles('trainer'), themeController.delete);
 
 module.exports = router;
