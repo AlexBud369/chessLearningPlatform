@@ -21,7 +21,7 @@ import { formatSanListAsPgnLine } from '../../shared/lib/formatMoveNotation';
 import {
   formatSolutionWithMeta,
   getFenAfterMoves,
-  isValidFen,
+  validateTaskFen,
   parseSolutionWithMeta,
   PlayerSide,
   tryMoveFromSquares,
@@ -106,8 +106,9 @@ export const TaskBoardEditor = forwardRef<TaskBoardEditorHandle, TaskBoardEditor
   };
 
   const applyStartPosition = () => {
-    if (!isValidFen(positionFen)) {
-      toast.error(t('tasks.board.invalidFen'));
+    const fenValidation = validateTaskFen(positionFen);
+    if (!fenValidation.ok) {
+      toast.error(fenValidation.message || t('tasks.board.invalidFen'));
       return;
     }
     setBaseFen(positionFen);
@@ -120,7 +121,7 @@ export const TaskBoardEditor = forwardRef<TaskBoardEditorHandle, TaskBoardEditor
 
   const handleModeChange = (_: unknown, nextMode: number) => {
     if (nextMode === 1) {
-      const recordingBase = isValidFen(positionFen) ? positionFen : baseFen;
+      const recordingBase = validateTaskFen(positionFen).ok ? positionFen : baseFen;
       setBaseFen(recordingBase);
       setSolutionFen(getFenAfterMoves(recordingBase, solutionMoves, solutionMoves.length));
     }
@@ -164,7 +165,7 @@ export const TaskBoardEditor = forwardRef<TaskBoardEditorHandle, TaskBoardEditor
     ref,
     () => ({
       getSnapshot: () => {
-        const effectiveFen = isValidFen(positionFen) ? positionFen : baseFen;
+        const effectiveFen = validateTaskFen(positionFen).ok ? positionFen : baseFen;
         return {
           fen: effectiveFen,
           solution: formatSolutionWithMeta(solutionMoves, effectiveFen, playerSide),

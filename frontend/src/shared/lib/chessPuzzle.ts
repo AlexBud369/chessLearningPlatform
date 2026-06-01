@@ -60,21 +60,95 @@ export const hasSolutionMoves = (solution: string, startFen: string): boolean =>
 
 export const formatSolutionMoves = (moves: string[]): string => moves.join(' ');
 
-export const isValidFen = (fen: string): boolean => {
+export interface FenValidationResult {
+  ok: boolean;
+  message?: string;
+}
+
+const boardHasBothKings = (chess: Chess): { whiteKing: boolean; blackKing: boolean } => {
+  const board = chess.board();
+  let whiteKing = false;
+  let blackKing = false;
+
+  for (const row of board) {
+    for (const piece of row) {
+      if (piece?.type === 'k') {
+        if (piece.color === 'w') whiteKing = true;
+        if (piece.color === 'b') blackKing = true;
+      }
+    }
+  }
+
+  return { whiteKing, blackKing };
+};
+
+export const validateTaskFen = (fen: string): FenValidationResult => {
+  if (!fen.trim()) {
+    return { ok: false, message: 'Invalid FEN' };
+  }
+
   try {
-    new Chess(fen);
-    return true;
-  } catch {
-    return false;
+    const chess = new Chess(fen.trim());
+    const { whiteKing, blackKing } = boardHasBothKings(chess);
+
+    if (!whiteKing) {
+      return { ok: false, message: 'Invalid FEN: missing white king' };
+    }
+    if (!blackKing) {
+      return { ok: false, message: 'Invalid FEN: missing black king' };
+    }
+
+    return { ok: true };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Invalid FEN';
+    return { ok: false, message };
+  }
+};
+
+export const isValidFen = (fen: string): boolean => validateTaskFen(fen).ok;
+
+export const validateTaskSolution = (fen: string, solution: string): FenValidationResult => {
+  const fenCheck = validateTaskFen(fen);
+  if (!fenCheck.ok) return fenCheck;
+
+  const moves = parseSolutionWithMeta(solution, fen).moves;
+  if (moves.length === 0) {
+    return { ok: false, message: 'Solution has no valid moves' };
+  }
+
+  try {
+    const chess = new Chess(fen.trim());
+    for (const san of moves) {
+      const move = chess.move(san);
+      if (!move) {
+        return { ok: false, message: `Invalid move: ${san}` };
+      }
+    }
+
+    return { ok: true };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Invalid solution';
+    return { ok: false, message };
   }
 };
 
 export const getFenAfterMoves = (startFen: string, moves: string[], count: number): string => {
-  const chess = new Chess(startFen);
-  for (let i = 0; i < count && i < moves.length; i++) {
-    chess.move(moves[i]);
+  try {
+    const fenCheck = validateTaskFen(startFen);
+    if (!fenCheck.ok) return startFen;
+
+    const chess = new Chess(startFen);
+    const limit = Math.max(0, Math.min(count, moves.length));
+
+    for (let i = 0; i < limit; i++) {
+      const move = chess.move(moves[i]);
+      if (!move) break;
+    }
+
+    return chess.fen();
+  } catch {
+    return startFen;
   }
-  return chess.fen();
 };
 
 export const isExpectedMove = (fen: string, from: string, to: string, expectedSan: string): boolean => {
@@ -137,7 +211,10 @@ export const applyCorrectPlayerMove = (
   const expected = solutionMoves[stepIndex];
   if (!expected) return null;
 
+  if (!validateTaskFen(startFen).ok) return null;
+
   const currentFen = getFenAfterMoves(startFen, solutionMoves, stepIndex);
+  if (!validateTaskFen(currentFen).ok) return null;
   if (!isExpectedMove(currentFen, from, to, expected)) return null;
 
   let nextIndex = stepIndex + 1;
@@ -149,6 +226,7 @@ export const applyCorrectPlayerMove = (
   }
 
   const fen = getFenAfterMoves(startFen, solutionMoves, nextIndex);
+  if (!validateTaskFen(fen).ok) return null;
 
   return {
     fen,

@@ -22,10 +22,11 @@ import { BoardControls } from '../../shared/ui/Chessboard/BoardControls';
 import { Breadcrumbs } from '../../shared/ui/Breadcrumbs/Breadcrumbs';
 import { ROUTES } from '../../shared/constants/routes';
 import { getDifficultyColor, getDifficultyLabelKey } from '../../shared/lib/difficulty';
-import { flipBoardOrientation } from '../../shared/lib/chessFen';
+import { flipBoardOrientation, getSideToMove } from '../../shared/lib/chessFen';
 import {
   applyCorrectPlayerMove,
   parseSolutionWithMeta,
+  validateTaskSolution,
 } from '../../shared/lib/chessPuzzle';
 
 export const TaskPage = () => {
@@ -41,6 +42,7 @@ export const TaskPage = () => {
   const [boardOrientation, setBoardOrientation] = useState<'white' | 'black'>('white');
   const [solved, setSolved] = useState(false);
   const [lastAutoMoves, setLastAutoMoves] = useState<string[]>([]);
+  const [puzzleInvalid, setPuzzleInvalid] = useState(false);
 
   const { moves: solutionMoves, playerSide, displayLine } = useMemo(
     () => (task ? parseSolutionWithMeta(task.solution, task.fen) : { moves: [], playerSide: 'white' as const, displayLine: '' }),
@@ -58,7 +60,14 @@ export const TaskPage = () => {
       setStepIndex(0);
       setSolved(false);
       setLastAutoMoves([]);
-      setBoardOrientation('white');
+      setBoardOrientation(
+        parseSolutionWithMeta(res.data.solution, res.data.fen).playerSide
+      );
+      const puzzleCheck = validateTaskSolution(res.data.fen, res.data.solution);
+      setPuzzleInvalid(!puzzleCheck.ok);
+      if (!puzzleCheck.ok) {
+        toast.warn(t('tasks.solve.invalidPuzzle'));
+      }
     } catch {
       toast.error(t('tasks.errors.loadOne'));
     } finally {
@@ -71,7 +80,7 @@ export const TaskPage = () => {
   }, [fetchTask]);
 
   const handlePieceDrop = (sourceSquare: string, targetSquare: string): boolean => {
-    if (!task || solved || solutionMoves.length === 0) {
+    if (!task || solved || puzzleInvalid || solutionMoves.length === 0) {
       return false;
     }
 
@@ -123,6 +132,7 @@ export const TaskPage = () => {
     setStepIndex(0);
     setSolved(false);
     setLastAutoMoves([]);
+    setPuzzleInvalid(false);
   };
 
   if (loading) {
@@ -142,6 +152,9 @@ export const TaskPage = () => {
   }
 
   const progressLabel = `${Math.min(stepIndex, solutionMoves.length)} / ${solutionMoves.length}`;
+  const sideToMove = getSideToMove(boardFen || task.fen);
+  const sideToMoveLabel =
+    sideToMove === 'w' ? t('tasks.solve.sideWhite') : t('tasks.solve.sideBlack');
 
   return (
     <Container maxWidth="md" sx={{ py: { xs: 2, sm: 4 }, px: { xs: 1, sm: 3 }, flexGrow: 1 }}>
@@ -175,11 +188,26 @@ export const TaskPage = () => {
           {t('tasks.solve.makeMoveOnBoard')}
         </Typography>
 
+        {puzzleInvalid && (
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            {t('tasks.solve.invalidPuzzle')}
+          </Alert>
+        )}
+
+        <Stack direction="row" spacing={1} sx={{ mb: 1 }} flexWrap="wrap" useFlexGap>
+          <Chip label={t('tasks.solve.sideToMove', { side: sideToMoveLabel })} size="small" color="primary" variant="outlined" />
+          <Chip
+            label={t('tasks.board.playerSide') + ': ' + (playerSide === 'white' ? t('tasks.solve.sideWhite') : t('tasks.solve.sideBlack'))}
+            size="small"
+            variant="outlined"
+          />
+        </Stack>
+
         <Box sx={{ width: '100%', maxWidth: 360, mx: 'auto', mb: 1, overflow: 'hidden' }}>
           <Chessboard
             position={boardFen}
             orientation={boardOrientation}
-            arePiecesDraggable={!solved && !saving}
+            arePiecesDraggable={!solved && !saving && !puzzleInvalid}
             onPieceDrop={handlePieceDrop}
             compact
             maxWidth={340}

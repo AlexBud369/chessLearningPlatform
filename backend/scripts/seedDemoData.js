@@ -119,19 +119,19 @@ const createLessons = async (courses) => {
 const TASK_TEMPLATES = [
   {
     title: 'Мат в 1',
-    fen: '6k1/5ppp/8/8/8/8/5PPP/6K1 w - - 0 1',
-    solution: '@player:white@ 1. gxf7#',
+    fen: '6k1/6R1/8/8/8/8/8/6K1 w - - 0 1',
+    solution: '@player:white@ 1. Rxg8#',
     difficulty: 1,
   },
   {
     title: 'Вилка конём',
-    fen: '8/8/8/8/4n3/8/5PPP/4R1K1 w - - 0 1',
-    solution: '@player:white@ 1. Re8+',
+    fen: '4k3/4q3/8/4N3/8/8/8/6K1 w - - 0 1',
+    solution: '@player:white@ 1. Ng6',
     difficulty: 2,
   },
   {
     title: 'Слабый король',
-    fen: 'r1bqkb1r/pppp1ppp/2n2n2/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 0 4',
+    fen: 'r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K2R w KQkq - 4 4',
     solution: '@player:white@ 1. Qxf7#',
     difficulty: 1,
   },
@@ -143,8 +143,8 @@ const TASK_TEMPLATES = [
   },
   {
     title: 'Пешечный прорыв',
-    fen: '8/4k3/4P3/8/8/8/8/4K3 w - - 0 1',
-    solution: '@player:white@ 1. e7',
+    fen: '8/4k3/8/3P4/8/8/8/4K3 w - - 0 1',
+    solution: '@player:white@ 1. d6',
     difficulty: 2,
   },
 ];

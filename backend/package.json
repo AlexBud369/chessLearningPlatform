@@ -11,6 +11,7 @@
     "seed:themes": "node scripts/seedThemes.js",
     "seed:demo": "node scripts/seedDemoData.js",
     "set-course-covers": "node scripts/setCourseCovers.js",
+    "fix-task-positions": "node scripts/fixTaskPositions.js",
     "migrate": "node scripts/migrateSchema.js",
     "reset-db": "node seed.js"
   },

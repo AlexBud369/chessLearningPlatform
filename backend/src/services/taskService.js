@@ -1,6 +1,7 @@
 const taskRepository = require('../repositories/taskRepository');
 const userTaskResultRepository = require('../repositories/userTaskResultRepository');
 const { Chess } = require('chess.js');
+const { validateTaskPayload } = require('../utils/taskFenValidation');
 
 class TaskService {
   async getAllTasks(filters, page = 1, limit = 10, userId, status) {
@@ -23,10 +24,35 @@ class TaskService {
   }
 
   async createTask(taskData) {
+    const validation = validateTaskPayload(taskData);
+    if (!validation.ok) {
+      const error = new Error(validation.message);
+      error.status = 400;
+      throw error;
+    }
     return await taskRepository.create(taskData);
   }
 
   async updateTask(id, taskData) {
+    const existing = await taskRepository.findById(id);
+    if (!existing) {
+      throw new Error('Task not found');
+    }
+
+    const merged = {
+      fen: taskData.fen !== undefined ? taskData.fen : existing.fen,
+      solution: taskData.solution !== undefined ? taskData.solution : existing.solution,
+    };
+
+    if (taskData.fen !== undefined || taskData.solution !== undefined) {
+      const validation = validateTaskPayload(merged);
+      if (!validation.ok) {
+        const error = new Error(validation.message);
+        error.status = 400;
+        throw error;
+      }
+    }
+
     const task = await taskRepository.update(id, taskData);
     if (!task) {
       throw new Error('Task not found');

@@ -253,6 +253,10 @@
     "solve": {
       "enterMove": "Make a move on the board",
       "makeMoveOnBoard": "Drag a piece on the board to make your move",
+      "sideToMove": "Side to move: {{side}}",
+      "sideWhite": "White",
+      "sideBlack": "Black",
+      "invalidPuzzle": "This puzzle position or solution is invalid. Contact your trainer or administrator.",
       "progress": "Progress: {{current}}",
       "movePlaceholder": "Example: Qh7# or Nf3",
       "check": "Check",
