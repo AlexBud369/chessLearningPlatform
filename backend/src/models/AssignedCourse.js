@@ -1,15 +1,15 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Game = sequelize.define(
-    'Game',
+  const AssignedCourse = sequelize.define(
+    'AssignedCourse',
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      user_id: {
+      student_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -18,40 +18,25 @@ module.exports = (sequelize) => {
         },
         onDelete: 'CASCADE',
       },
-      pgn: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      result: {
-        type: DataTypes.STRING(20),
-        allowNull: true,
-      },
-      date_played: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      title: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      student_note: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      shared_with_trainer: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      last_edited_by: {
+      course_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
+        references: {
+          model: 'courses',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
+      assigned_by: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: 'users',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
-      uploaded_at: {
+      assigned_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
@@ -65,12 +50,19 @@ module.exports = (sequelize) => {
       },
     },
     {
-      tableName: 'games',
+      tableName: 'assigned_courses',
       timestamps: true,
       createdAt: 'created_at',
       updatedAt: 'updated_at',
+      indexes: [
+        {
+          unique: true,
+          fields: ['student_id', 'course_id'],
+          name: 'assigned_courses_student_course_unique',
+        },
+      ],
     }
   );
 
-  return Game;
+  return AssignedCourse;
 };

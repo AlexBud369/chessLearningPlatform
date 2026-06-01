@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  const Game = sequelize.define(
-    'Game',
+  const UserTaskResult = sequelize.define(
+    'UserTaskResult',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -18,42 +18,26 @@ module.exports = (sequelize) => {
         },
         onDelete: 'CASCADE',
       },
-      pgn: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      result: {
-        type: DataTypes.STRING(20),
-        allowNull: true,
-      },
-      date_played: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      title: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      student_note: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
-      shared_with_trainer: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      last_edited_by: {
+      task_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
-          model: 'users',
+          model: 'tasks',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
-      uploaded_at: {
+      solved: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      attempts: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      solved_at: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+        allowNull: true,
       },
       created_at: {
         type: DataTypes.DATE,
@@ -65,12 +49,12 @@ module.exports = (sequelize) => {
       },
     },
     {
-      tableName: 'games',
+      tableName: 'user_task_results',
       timestamps: true,
       createdAt: 'created_at',
       updatedAt: 'updated_at',
     }
   );
 
-  return Game;
+  return UserTaskResult;
 };
