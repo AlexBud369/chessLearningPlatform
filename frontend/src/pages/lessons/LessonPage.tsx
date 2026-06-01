@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from '../../widgets/header/Header';
-import { Footer } from '../../widgets/footer/Footer';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Typography, Box, Button, Paper, CircularProgress, Alert } from '@mui/material';
 import { useLessonProgress } from '../../features/lesson-progress/model/useLessonProgress';
 import { useTranslation } from 'react-i18next';
 import { useCourses } from '../../features/courses/model/useCourses';
+import { Breadcrumbs } from '../../shared/ui/Breadcrumbs/Breadcrumbs';
+import { ROUTES } from '../../shared/constants/routes';
 
 export const LessonPage: React.FC = () => {
   const { courseId, lessonId } = useParams<{ courseId: string; lessonId: string }>();
@@ -36,7 +36,7 @@ export const LessonPage: React.FC = () => {
 
   if (loading) {
     return (
-      <Container sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+      <Container sx={{ display: 'flex', justifyContent: 'center', py: 8, flexGrow: 1 }}>
         <CircularProgress />
       </Container>
     );
@@ -44,7 +44,7 @@ export const LessonPage: React.FC = () => {
 
   if (error) {
     return (
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ py: 4, flexGrow: 1 }}>
         <Alert severity="error">{error}</Alert>
       </Container>
     );
@@ -52,16 +52,25 @@ export const LessonPage: React.FC = () => {
 
   if (!lesson) {
     return (
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ py: 4, flexGrow: 1 }}>
         <Alert severity="info">{t('lesson.notFound')}</Alert>
       </Container>
     );
   }
 
   return (
-    <>
-    <Header />
-    <Container sx={{ py: 4 }}>
+    <Container sx={{ py: 4, flexGrow: 1 }}>
+      <Breadcrumbs
+        items={[
+          { label: t('breadcrumbs.home'), path: ROUTES.HOME },
+          { label: t('breadcrumbs.courses'), path: ROUTES.COURSES },
+          {
+            label: currentCourse?.title || t('breadcrumbs.course'),
+            path: courseId ? `/courses/${courseId}` : undefined,
+          },
+          { label: lesson.title },
+        ]}
+      />
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h4" gutterBottom>
           {lesson.title}
@@ -81,7 +90,7 @@ export const LessonPage: React.FC = () => {
             <div dangerouslySetInnerHTML={{ __html: lesson.content }} />
           )}
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2, flexWrap: 'wrap', gap: 1 }}>
           <Button
             variant="outlined"
             disabled={!prevLesson}
@@ -107,8 +116,5 @@ export const LessonPage: React.FC = () => {
         </Box>
       </Paper>
     </Container>
-     <Footer />
-    </>
-    
   );
 };

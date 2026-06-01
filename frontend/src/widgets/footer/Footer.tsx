@@ -11,7 +11,8 @@ export const Footer = () => {
       sx={{
         py: 3,
         px: 2,
-        mt: 'auto',
+        width: '100%',
+        boxSizing: 'border-box',
         backgroundColor: (theme) =>
           theme.palette.mode === 'light'
             ? theme.palette.grey[200]

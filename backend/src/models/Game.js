@@ -30,6 +30,27 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      title: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
+      },
+      student_note: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      shared_with_trainer: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      last_edited_by: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+      },
       uploaded_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,

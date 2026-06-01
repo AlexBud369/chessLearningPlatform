@@ -10,6 +10,10 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      title: {
+        type: DataTypes.STRING(TASK.TITLE_MAX_LENGTH),
+        allowNull: true,
+      },
       fen: {
         type: DataTypes.STRING(TASK.FEN_MAX_LENGTH),
         allowNull: false,
@@ -19,9 +23,13 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       difficulty: {
-        type: DataTypes.ENUM(...TASK.DIFFICULTY_VALUES),
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 'beginner',
+        defaultValue: 1,
+        validate: {
+          min: TASK.DIFFICULTY_MIN,
+          max: TASK.DIFFICULTY_MAX,
+        },
       },
       theme_id: {
         type: DataTypes.INTEGER,

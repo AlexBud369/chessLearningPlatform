@@ -38,4 +38,14 @@ export const progressApi = {
     const response = await axiosInstance.get('/progress/summary');
     return response.data;
   },
+
+  getTaskChart: async (days = 30): Promise<{ days: number; timeline: TaskChartPoint[] }> => {
+    const response = await axiosInstance.get('/progress/task-chart', { params: { days } });
+    return response.data;
+  },
 };
+
+export interface TaskChartPoint {
+  date: string;
+  count: number;
+}

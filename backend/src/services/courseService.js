@@ -14,8 +14,23 @@ class CourseService {
     return newCourse;
   }
 
-  async getAllCourses(filters, sortBy, sortOrder) {
-    return await courseRepository.findAll(filters, { sortBy, sortOrder });
+  async getAllCourses(filters, sortBy, sortOrder, page, limit, userId, status) {
+    const offset = (page - 1) * limit;
+    const { rows, count } = await courseRepository.findWithPaginationAndFilters({
+      filters,
+      sortBy,
+      sortOrder,
+      limit,
+      offset,
+      userId,
+      status,
+    });
+    return {
+      courses: rows,
+      total: count,
+      page,
+      totalPages: Math.ceil(count / limit),
+    };
   }
 
   async getCourseById(id) {
@@ -31,7 +46,7 @@ class CourseService {
     if (!course) {
       throw new Error('Course not found');
     }
-    if (course.author_id !== user.id && user.role !== 'admin') {
+    if (course.author_id !== user.id) {
       throw new Error('Forbidden: you can only edit your own courses');
     }
     if (updateData.theme_id) {
@@ -48,10 +63,23 @@ class CourseService {
     if (!course) {
       throw new Error('Course not found');
     }
-    if (course.author_id !== user.id && user.role !== 'admin') {
+    if (course.author_id !== user.id) {
       throw new Error('Forbidden: you can only delete your own courses');
     }
     return await courseRepository.delete(id);
+  }
+
+  async uploadCoverImage(courseId, filePath, user) {
+    const course = await courseRepository.findById(courseId);
+    if (!course) {
+      throw new Error('Course not found');
+    }
+    if (course.author_id !== user.id) {
+      throw new Error('Forbidden: you can only change cover of your own courses');
+    }
+    const relativePath = filePath.replace(/\\/g, '/');
+    const updated = await courseRepository.update(courseId, { cover_image: relativePath });
+    return updated;
   }
 }
 

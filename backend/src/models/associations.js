@@ -12,6 +12,8 @@ module.exports = (models) => {
     AnalysisNode,
     TrainerStudent,
     Favorite,
+    UserTaskResult,
+    AssignedCourse,           
   } = models;
 
   User.hasMany(RefreshToken, { foreignKey: 'user_id', as: 'refreshTokens', onDelete: 'CASCADE' });
@@ -66,4 +68,18 @@ module.exports = (models) => {
 
   User.hasMany(Favorite, { foreignKey: 'user_id', as: 'favorites', onDelete: 'CASCADE' });
   Favorite.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+
+  User.hasMany(UserTaskResult, { foreignKey: 'user_id', as: 'taskResults', onDelete: 'CASCADE' });
+  UserTaskResult.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+
+  Task.hasMany(UserTaskResult, { foreignKey: 'task_id', as: 'userResults', onDelete: 'CASCADE' });
+  UserTaskResult.belongsTo(Task, { foreignKey: 'task_id', as: 'task' });
+
+  User.hasMany(AssignedCourse, { foreignKey: 'student_id', as: 'assignedCourses', onDelete: 'CASCADE' });
+  User.hasMany(AssignedCourse, { foreignKey: 'assigned_by', as: 'coursesAssignedByMe', onDelete: 'CASCADE' });
+  Course.hasMany(AssignedCourse, { foreignKey: 'course_id', as: 'assignments', onDelete: 'CASCADE' });
+
+  AssignedCourse.belongsTo(User, { foreignKey: 'student_id', as: 'student' });
+  AssignedCourse.belongsTo(User, { foreignKey: 'assigned_by', as: 'assigner' });
+  AssignedCourse.belongsTo(Course, { foreignKey: 'course_id', as: 'course' });
 };

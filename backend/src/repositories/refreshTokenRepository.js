@@ -1,19 +1,25 @@
 const { RefreshToken } = require('../models');
 
 class RefreshTokenRepository {
-    async create (tokenData) {
-        return await RefreshToken.create(tokenData);
-    }
+  async create(data) {
+    return RefreshToken.create(data);
+  }
 
-    async findByToken(token) {   
-        return await RefreshToken.findOne({ where: { token } });
-    }
+  async findByToken(token) {
+    return RefreshToken.findOne({ where: { token } });
+  }
 
-    async deleteByToken (token) {
-        return await RefreshToken.destroy({ where: { token } });
-    }
+  async deleteByToken(token) {
+    return RefreshToken.destroy({ where: { token } });
+  }
 
+  async deleteAllForUser(userId) {
+    return RefreshToken.destroy({ where: { user_id: userId } });
+  }
 
-};
+  async getLastLoginAt(userId) {
+    return RefreshToken.max('updated_at', { where: { user_id: userId } });
+  }
+}
 
 module.exports = new RefreshTokenRepository();

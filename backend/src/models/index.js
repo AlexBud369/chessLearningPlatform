@@ -11,6 +11,8 @@ const Game = require('./Game')(sequelize);
 const AnalysisNode = require('./AnalysisNode')(sequelize);
 const TrainerStudent = require('./TrainerStudent')(sequelize);
 const Favorite = require('./Favorite')(sequelize);
+const UserTaskResult = require('./UserTaskResult')(sequelize);
+const AssignedCourse = require('./AssignedCourse')(sequelize);
 
 const models = {
   User,
@@ -25,6 +27,8 @@ const models = {
   AnalysisNode,
   TrainerStudent,
   Favorite,
+  UserTaskResult,
+  AssignedCourse,
 };
 
 const defineAssociations = require('./associations');

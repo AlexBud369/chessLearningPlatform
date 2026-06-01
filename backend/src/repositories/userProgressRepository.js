@@ -66,6 +66,23 @@ class UserProgressRepository {
     };
   }
 
+  async getLastLessonActivity(userId) {
+    return await UserProgress.max('completed_at', {
+      where: { user_id: userId, completed: true },
+    });
+  }
+
+  async getCompletedLessonsDetailed(userId) {
+    return await UserProgress.findAll({
+      where: { user_id: userId, completed: true, lesson_id: { [Op.ne]: null } },
+      include: [
+        { model: Lesson, as: 'lesson', attributes: ['id', 'title', 'order_index'] },
+        { model: Course, as: 'course', attributes: ['id', 'title'] },
+      ],
+      order: [['completed_at', 'DESC']],
+    });
+  }
+
   async getUserProgressSummary(userId) {
     const progress = await UserProgress.findAll({
       where: { user_id: userId, lesson_id: { [Op.ne]: null } },

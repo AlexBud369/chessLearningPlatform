@@ -8,8 +8,8 @@ router.get('/course/:courseId', lessonController.getByCourseId);
 router.get('/:id', lessonController.getById);
 router.get('/course/:courseId/navigation/:lessonId', lessonController.getNavigation);
 
-router.post('/', authMiddleware, allowRoles('trainer', 'admin'), lessonController.create);
-router.put('/:id', authMiddleware, allowRoles('trainer', 'admin'), lessonController.update);
-router.delete('/:id', authMiddleware, allowRoles('trainer', 'admin'), lessonController.delete);
+router.post('/', authMiddleware, allowRoles('trainer'), lessonController.create);
+router.put('/:id', authMiddleware, allowRoles('trainer'), lessonController.update);
+router.delete('/:id', authMiddleware, allowRoles('trainer'), lessonController.delete);
 
 module.exports = router;

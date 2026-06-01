@@ -10,8 +10,8 @@ class TrainerStudentService {
     }
 
     const student = await userRepository.findById(studentId);
-    if (!student) {
-      throw new Error('Student not found');
+    if (!student || student.role !== 'player') {
+      throw new Error('Student not found or user is not a player');
     }
 
     const existing = await trainerStudentRepository.findByTrainerAndStudent(trainerId, studentId);
@@ -41,8 +41,8 @@ class TrainerStudentService {
     return await trainerStudentRepository.delete(relation.id);
   }
 
-  async assignCourseToStudent(trainerId, studentId, courseId) {
-    throw new Error('Not implemented yet');
+  async searchPlayers(query) {
+    return await userRepository.searchPlayers(query);
   }
 }
 

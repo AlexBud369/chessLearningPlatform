@@ -10,7 +10,8 @@ router.post('/lesson', userProgressController.markLessonCompleted);
 router.get('/course/:courseId', userProgressController.getUserProgressForCourse);
 router.get('/course/:courseId/status', userProgressController.getCourseCompletionStatus);
 router.get('/summary', userProgressController.getUserProgressSummary);
+router.get('/task-chart', userProgressController.getTaskChart);
 
-router.get('/user/:userId/summary', allowRoles('admin', 'trainer'), userProgressController.getProgressByUserId);
+router.get('/user/:userId/summary', allowRoles('trainer'), userProgressController.getProgressByUserId);
 
 module.exports = router;
