@@ -17,18 +17,21 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useTaskFilters } from '../../features/task-filters/model/useTaskFilters';
 import { useFavorites } from '../../features/favorites/model/useFavorites';
+import { useAppSelector } from '../../shared/lib/hooks';
 import { TaskCard } from '../../shared/ui/TaskCard/TaskCard';
 import { tasksApi } from '../../shared/api/tasksApi';
 import { Task } from '../../shared/types/task';
+import type { CompletionStatus } from '../../shared/api/coursesApi';
 
 export const TasksCatalogPage = () => {
   const { t } = useTranslation();
-  const { search, difficulty, page, limit, setSearch, setDifficulty, setPage, resetFilters } =
+  const user = useAppSelector((state) => state.user.user);
+  const { search, difficulty, status, page, limit, setSearch, setDifficulty, setStatus, setPage, resetFilters } =
     useTaskFilters();
   const { isFavorite, toggleFavorite } = useFavorites('task');
 
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [difficultyOptions, setDifficultyOptions] = useState<string[]>([]);
+  const [difficultyOptions, setDifficultyOptions] = useState<number[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [loadingDifficulties, setLoadingDifficulties] = useState(false);
@@ -57,7 +60,8 @@ export const TasksCatalogPage = () => {
         page,
         limit,
         search: search || undefined,
-        difficulty: difficulty || undefined,
+        difficulty: difficulty ? Number(difficulty) : undefined,
+        status: status || undefined,
       });
 
       setTasks(res.data.tasks);
@@ -67,7 +71,13 @@ export const TasksCatalogPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [difficulty, limit, page, search, t]);
+  }, [difficulty, limit, page, search, status, t]);
+
+  useEffect(() => {
+    if (!user && status) {
+      setStatus('');
+    }
+  }, [user, status, setStatus]);
 
   useEffect(() => {
     loadDifficulties();
@@ -78,7 +88,7 @@ export const TasksCatalogPage = () => {
       return;
     }
 
-    if (difficulty && !difficultyOptions.includes(difficulty)) {
+    if (difficulty && !difficultyOptions.includes(Number(difficulty))) {
       setDifficulty('');
       return;
     }
@@ -87,7 +97,7 @@ export const TasksCatalogPage = () => {
   }, [difficultiesLoaded, difficulty, difficultyOptions, fetchTasks, setDifficulty]);
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4, flexGrow: 1 }}>
       <Typography variant="h4" gutterBottom>
         {t('tasks.catalog.title')}
       </Typography>
@@ -111,12 +121,27 @@ export const TasksCatalogPage = () => {
           >
             <MenuItem value="">{t('tasks.difficulty.all')}</MenuItem>
             {difficultyOptions.map((level) => (
-              <MenuItem key={level} value={level}>
-                {t(`tasks.difficulty.${level}`, { defaultValue: level })}
+              <MenuItem key={level} value={String(level)}>
+                {t(`difficulty.level${level}`, { defaultValue: String(level) })}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
+
+        {user && (
+          <FormControl size="small" sx={{ minWidth: 170 }}>
+            <InputLabel>{t('filters.status')}</InputLabel>
+            <Select
+              value={status}
+              label={t('filters.status')}
+              onChange={(e) => setStatus(e.target.value as CompletionStatus | '')}
+            >
+              <MenuItem value="">{t('filters.allStatuses')}</MenuItem>
+              <MenuItem value="completed">{t('filters.completed')}</MenuItem>
+              <MenuItem value="not_completed">{t('filters.notCompleted')}</MenuItem>
+            </Select>
+          </FormControl>
+        )}
 
         <Button variant="outlined" onClick={resetFilters}>
           {t('filters.reset')}
