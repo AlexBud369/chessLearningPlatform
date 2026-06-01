@@ -14,6 +14,7 @@ import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { Course } from '../../api/coursesApi';
+import { getDifficultyLabelKey } from '../../lib/difficulty';
 
 interface CourseCardProps {
   course: Course;
@@ -79,6 +80,11 @@ export const CourseCard: React.FC<CourseCardProps> = ({
         {course.theme && (
           <Typography variant="subtitle2" color="textSecondary" gutterBottom>
             {course.theme.name}
+          </Typography>
+        )}
+        {course.difficulty && (
+          <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
+            {t(getDifficultyLabelKey(course.difficulty))}
           </Typography>
         )}
         <Typography variant="body2" color="textSecondary">
