@@ -13,9 +13,13 @@ const errorHandler = (err, _req, res, _next) => {
     } else if (message === 'Refresh token required' || message === 'User not found or blocked') {
         status = 401;
         message = 'Authentication failed';
-    } else if (message === 'User is blocked') {
+    } else     if (message === 'User is blocked') {
         status = 403;
         message = 'Your account has been blocked';
+    } else if (message === 'Game not found') {
+        status = 404;
+    } else if (message === 'Forbidden' || message === 'Student is not assigned to this trainer') {
+        status = 403;
     }
 
     if (err.array && typeof err.array === 'function') {
