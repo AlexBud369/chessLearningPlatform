@@ -45,64 +45,6 @@ export const useCourses = () => {
     setCurrentCourse(null);
   }, []);
 
-  const createCourse = useCallback(async (courseData: any) => {
-    try {
-      setLoading(true);
-      const newCourse = await coursesApi.createCourse(courseData);
-      setCourses(prev => [...prev, newCourse]);
-      return newCourse;
-    } catch (err: any) {
-      setError(err.message || 'Failed to create course');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const updateCourse = useCallback(async (id: number, data: Partial<Course>) => {
-    try {
-      setLoading(true);
-      const updated = await coursesApi.updateCourse(id, data);
-      setCourses(prev => prev.map(c => c.id === id ? updated : c));
-      if (currentCourse?.id === id) setCurrentCourse(updated);
-      return updated;
-    } catch (err: any) {
-      setError(err.message || 'Failed to update course');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [currentCourse]);
-
-  const deleteCourse = useCallback(async (id: number) => {
-    try {
-      setLoading(true);
-      await coursesApi.deleteCourse(id);
-      setCourses(prev => prev.filter(c => c.id !== id));
-      if (currentCourse?.id === id) setCurrentCourse(null);
-    } catch (err: any) {
-      setError(err.message || 'Failed to delete course');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [currentCourse]);
-
-  const uploadCover = useCallback(async (courseId: number, file: File) => {
-    try {
-      setLoading(true);
-      const updatedCourse = await coursesApi.uploadCourseCover(courseId, file);
-      setCourses(prev => prev.map(c => c.id === courseId ? updatedCourse : c));
-      if (currentCourse?.id === courseId) setCurrentCourse(updatedCourse);
-      return updatedCourse;
-    } catch (err: any) {
-      setError(err.message || 'Failed to upload cover');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [currentCourse]);
-
   return {
     courses,
     currentCourse,
@@ -114,9 +56,5 @@ export const useCourses = () => {
     loadCourses,
     loadCourseById,
     clearCurrentCourse,
-    createCourse,
-    updateCourse,
-    deleteCourse,
-    uploadCover,
   };
 };
