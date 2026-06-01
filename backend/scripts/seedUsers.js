@@ -1,6 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const { sequelize, User, RefreshToken, TrainerStudent, UserProgress, Favorite, CourseTask, Game, AnalysisNode } = require('../src/models');
+const { runSchemaMigrations } = require('../src/db/runSchemaMigrations');
 
 const clearDatabase = async () => {
   await RefreshToken.destroy({ where: {}, truncate: { cascade: true } });
@@ -39,6 +40,7 @@ const seed = async () => {
   try {
     await sequelize.authenticate();
     console.log('Подключение к БД установлено');
+    await runSchemaMigrations(sequelize);
     await sequelize.sync({ alter: true });
     console.log('Синхронизация моделей завершена');
     await clearDatabase();
