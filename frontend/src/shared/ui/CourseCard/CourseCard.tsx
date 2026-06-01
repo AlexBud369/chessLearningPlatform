@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { Course } from '../../api/coursesApi';
 import { getDifficultyLabelKey } from '../../lib/difficulty';
+import { getCourseCoverImageUrl } from '../../lib/courseCoverImage';
 
 interface CourseCardProps {
   course: Course;
@@ -47,20 +48,17 @@ export const CourseCard: React.FC<CourseCardProps> = ({
     ? `${course.description.substring(0, 100)}...`
     : course.description;
 
-  const coverImageUrl = course.cover_image 
-    ? `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/${course.cover_image}`
-    : null;
+  const coverImageUrl = getCourseCoverImageUrl(course.cover_image);
 
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-      {coverImageUrl && (
-        <CardMedia
-          component="img"
-          height="140"
-          image={coverImageUrl}
-          alt={course.title}
-        />
-      )}
+      <CardMedia
+        component="img"
+        height="140"
+        image={coverImageUrl}
+        alt={course.title}
+        sx={{ objectFit: 'cover' }}
+      />
       <CardContent sx={{ flexGrow: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <Typography variant="h6" component="h2" gutterBottom sx={{ pr: 4 }}>

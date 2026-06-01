@@ -79,6 +79,8 @@ const createCourses = async (themes, trainer) => {
     'Техника расчёта вариантов',
   ];
 
+  const defaultCover = '/images/background/channels4_profile.jpg';
+
   const courses = await Course.bulkCreate(
     titles.map((title, index) => ({
       title,
@@ -86,6 +88,7 @@ const createCourses = async (themes, trainer) => {
       difficulty: (index % 5) + 1,
       theme_id: themes[index % themes.length].id,
       author_id: trainer.id,
+      cover_image: defaultCover,
     }))
   );
   console.log(`Курсы: ${courses.length}`);

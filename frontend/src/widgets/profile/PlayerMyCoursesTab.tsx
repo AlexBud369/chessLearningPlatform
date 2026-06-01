@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAssignCourse } from '../../features/assign-course/model/useAssignCourse';
+import { getCourseCoverImageUrl } from '../../shared/lib/courseCoverImage';
 
 export const PlayerMyCoursesTab = () => {
   const navigate = useNavigate();
@@ -60,11 +61,11 @@ export const PlayerMyCoursesTab = () => {
             <CardActionArea
               onClick={() => assignment.course && navigate(`/courses/${assignment.course.id}`)}
             >
-              {assignment.course?.cover_image && (
+              {assignment.course && (
                 <CardMedia
                   component="img"
                   height="140"
-                  image={assignment.course.cover_image}
+                  image={getCourseCoverImageUrl(assignment.course.cover_image)}
                   alt={assignment.course.title}
                   sx={{ objectFit: 'cover' }}
                 />
